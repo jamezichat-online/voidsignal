@@ -104,7 +104,7 @@
         for (let x = 0; x < nw; x++) {
           const lock = Math.exp(-((x - lx) * (x - lx) + dy2) / r2);
           const v = NOISE[(o++) & 65535];
-          const a = (strength * 235 * (1 - 0.9 * lock)) | 0;
+          const a = (strength * 185 * (1 - 0.9 * lock)) | 0;
           n32[row + x] = (a << 24) | ((v * 0.9 + 12) << 16) | ((v * 0.86) << 8) | (v * 0.88);
         }
       }
@@ -144,7 +144,7 @@
         hud.mhz.textContent = (87.6 + progress * 13.8).toFixed(1);
         const lit = Math.round(Math.min(1, progress / 0.84) * 5);
         hud.bars.forEach((b, i) => b.classList.toggle("on", i < lit));
-        hud.state.textContent = progress === 0 ? "Scroll to tune in" : rev ? "Signal locked" : "Tuning";
+        hud.state.textContent = progress === 0 ? "Scroll to tune in" : rev ? "Signal received" : "Tuning";
       }
       if (f !== target) { target = f; pump(); }
       if (shown !== target) paint();
@@ -265,10 +265,10 @@
         form.email.focus(); return;
       }
       if (!form.consent.checked) {
-        say("Tick the consent box so we're allowed to email you about the drop.", "err");
+        say("Tick the consent box so we can send you the transmission.", "err");
         form.consent.focus(); return;
       }
-      btn.disabled = true; say("Joining…");
+      btn.disabled = true; say("Tuning in…");
       try {
         const res = await fetch(API, {
           method: "POST",
@@ -281,14 +281,14 @@
         const data = await res.json().catch(() => ({}));
         if (res.ok && data.ok) {
           form.reset();
-          say("You're on the list. We'll email you when Drop 01 opens.", "ok");
+          say("You're on the frequency. The next transmission reaches you first.", "ok");
         } else if (data.error === "email") {
           say("That email doesn't look right. Check it and try again.", "err");
         } else {
-          say("The list didn't respond. Try again in a minute, or write to info@voidsignalbrand.com.", "err");
+          say("The signal dropped. Try again in a minute, or write to info@voidsignalbrand.com.", "err");
         }
       } catch {
-        say("No connection to the list. Check your network and try again.", "err");
+        say("No connection. Check your network and try again.", "err");
       } finally {
         btn.disabled = false;
       }
