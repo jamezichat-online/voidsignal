@@ -13,7 +13,7 @@
   <meta property="og:title" content="VoidSignal — Signal over noise">
   <meta property="og:description" content="Graphic tees in three frequencies: Street Rock, Gym, Cyber Tech. Join the Drop 01 list.">
   <meta property="og:url" content="https://voidsignalbrand.com/">
-  <meta property="og:image" content="https://voidsignalbrand.com/assets/og.png">
+  <meta property="og:image" content="https://voidsignalbrand.com/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -28,7 +28,7 @@
   <a class="skip" href="#main">Skip to content</a>
 
   <header class="top">
-    <a class="wordmark" href="/" aria-label="VoidSignal home">VOID<span>SIGNAL</span></a>
+    <a class="wordmark" href="/"><img src="/assets/img/logo-160.png" width="160" height="119" alt="VoidSignal"></a>
     <nav aria-label="Primary">
       <a href="#frequencies">Frequencies</a>
       <a href="#drop">Drop 01</a>
@@ -38,16 +38,24 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <canvas id="static" aria-hidden="true"></canvas>
-      <div class="hero-copy">
-        <h1 id="hero-title">Signal<br>over noise.</h1>
-        <p class="lede">Graphic tees in three frequencies. Street&nbsp;Rock, Gym and Cyber&nbsp;Tech, drawn by one designer who would wear every single one.</p>
-        <div class="hero-actions">
-          <a class="btn" href="#drop">Join the Drop 01 list</a>
-          <a class="link" href="#frequencies">See the frequencies</a>
+      <div class="hero-sticky">
+        <canvas id="frames" aria-hidden="true"></canvas>
+        <canvas id="static" aria-hidden="true"></canvas>
+        <div class="hero-copy hero-copy--open">
+          <h1 id="hero-title">Signal<br>over noise.</h1>
+          <p class="lede">Graphic tees in three frequencies. Street&nbsp;Rock, Gym and Cyber&nbsp;Tech, drawn by one designer who would wear every single one.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#drop">Join the Drop 01 list</a>
+            <a class="link" href="#frequencies">See the frequencies</a>
+          </div>
         </div>
+        <div class="hero-copy hero-copy--reveal" aria-hidden="true">
+          <p class="reveal-title">Signal locked.</p>
+          <p class="reveal-sub">Street Rock tee from Drop 01. Torn-poster graphic, printed when you order.</p>
+          <a class="btn" href="#drop" tabindex="-1">Join the Drop 01 list</a>
+        </div>
+        <p class="tune-hint" aria-hidden="true">Scroll to tune in</p>
       </div>
-      <p class="tune-hint" aria-hidden="true">Move to tune in</p>
     </section>
 
     <section class="manifesto" aria-label="Manifesto">
@@ -66,6 +74,10 @@
             <p class="freq-code">VS/SR, overdrive wave</p>
             <p>Skulls, strings and distortion. Raw graphics pulled from gig flyers, skate decks and amp stacks pushed past ten.</p>
           </div>
+        <figure class="freq-media">
+            <img class="freq-main" src="/assets/img/sr-main-800.webp" srcset="/assets/img/sr-main-800.webp 800w, /assets/img/sr-main-1400.webp 1400w" sizes="(max-width: 760px) 92vw, 44vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a dim rock bar wearing the black Street Rock tee with the VoidSignal microphone shield graphic">
+            <img class="freq-detail" src="/assets/img/sr-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the Signal graphic: microphone, lightning bolts and the words loud, raw, power, noise">
+          </figure>
         </div>
       </article>
 
@@ -77,6 +89,10 @@
             <p class="freq-code">VS/GYM, pulse wave</p>
             <p>Heavy type and hard contrast for the sessions nobody sees. Built to be sweated in, washed, and worn again tomorrow.</p>
           </div>
+        <figure class="freq-media">
+            <img class="freq-main" src="/assets/img/gym-main-800.webp" srcset="/assets/img/gym-main-800.webp 800w, /assets/img/gym-main-1400.webp 1400w" sizes="(max-width: 760px) 92vw, 44vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man training curls in a gym wearing the charcoal Gym Tribe tee with the angular VS emblem">
+            <img class="freq-detail" src="/assets/img/gym-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the Gym Tribe VS emblem printed on black fabric">
+          </figure>
         </div>
       </article>
 
@@ -88,6 +104,10 @@
             <p class="freq-code">VS/CT, square wave</p>
             <p>Circuits, glitches and interface ghosts. For people who read the source code of the world and still want it to look good.</p>
           </div>
+        <figure class="freq-media">
+            <img class="freq-main" src="/assets/img/ct-main-800.webp" srcset="/assets/img/ct-main-800.webp 800w, /assets/img/ct-main-1400.webp 1400w" sizes="(max-width: 760px) 92vw, 44vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a neon-lit street at night wearing the black Cyber Tech tee with iridescent claw-scratch graphic">
+            <img class="freq-detail" src="/assets/img/ct-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the iridescent claw scratches with circuit traces and the VoidSignal logo">
+          </figure>
         </div>
       </article>
     </section>
@@ -126,7 +146,7 @@
   </main>
 
   <footer class="foot">
-    <p class="foot-mark">VOID<span>SIGNAL</span></p>
+    <p class="foot-mark"><img src="/assets/img/logo-160.png" width="80" height="60" alt="VoidSignal"></p>
     <ul>
       <li><a href="mailto:info@voidsignalbrand.com">info@voidsignalbrand.com</a></li>
       <li><a href="https://www.instagram.com/voidsignalbrand/" rel="noopener" target="_blank">Instagram</a></li>

@@ -3,108 +3,187 @@
   const API = "https://voidsignal-api.smartlabdesign-tools.workers.dev/subscribe";
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Hero: static field with a signal you tune in ---------- */
-  const canvas = document.getElementById("static");
-  if (canvas) {
-    const ctx = canvas.getContext("2d", { alpha: false });
-    const SCALE = 3;                 // internal pixel = 3 CSS px, keeps it cheap and gritty
-    let w = 0, h = 0, img, buf32;
+  /* ---------- Hero: scroll-scrubbed film under a tunable static field ---------- */
+  const hero = document.querySelector(".hero");
+  const frames = document.getElementById("frames");
+  const noise = document.getElementById("static");
+  if (hero && frames && noise) {
+    const N = 121;
+    // piecewise timeline: scroll progress -> frame (holds are deliberate stills)
+    const TL = [
+      { p0: 0.00, p1: 0.06, f0: 0,   f1: 0 },    // hold: back to camera
+      { p0: 0.06, p1: 0.78, f0: 0,   f1: 100 },  // turn, profile, close-up
+      { p0: 0.78, p1: 0.90, f0: 100, f1: 120 },  // pull back: the shirt
+      { p0: 0.90, p1: 1.00, f0: 120, f1: 120 },  // hold: signal locked
+    ];
+    const frameAt = (p) => {
+      for (const s of TL) if (p <= s.p1) {
+        const k = s.p1 === s.p0 ? 0 : (p - s.p0) / (s.p1 - s.p0);
+        return Math.round(s.f0 + (s.f1 - s.f0) * Math.min(1, Math.max(0, k)));
+      }
+      return N - 1;
+    };
+
+    const fctx = frames.getContext("2d");
+    let ready = document.readyState === "complete";
+    window.addEventListener("load", () => { ready = true; pump(); }, { once: true });
+    let variant = "", cache = new Map(), inflight = new Set(), target = 0, shown = -1, progress = 0;
+    const pickVariant = () => (window.innerWidth / window.innerHeight < 0.85 ? "m" : "d");
+    const url = (i) => "/assets/hero/" + variant + "/f_" + String(i + 1).padStart(3, "0") + ".webp";
+
+    function load(i) {
+      if (i < 0 || i >= N || cache.has(i) || inflight.has(i)) return;
+      inflight.add(i);
+      const v = variant, img = new Image();
+      img.decoding = "async";
+      img.onload = () => {
+        inflight.delete(i);
+        if (v !== variant) return;            // breakpoint changed meanwhile: drop it
+        cache.set(i, img);
+        if (Math.abs(i - target) <= Math.abs(shown - target) || shown < 0) paint();
+        pump();
+      };
+      img.onerror = () => { inflight.delete(i); };
+      img.src = url(i);
+    }
+    // load nearest-first around the target, bounded concurrency and memory
+    function pump() {
+      if (inflight.size >= 6) return;
+      if (!ready || reduce) return;            // wait for page load; never stream the sequence for reduced motion
+      for (let d = 0; d <= 30 && inflight.size < 6; d++) {   // window: 8 behind, 30 ahead
+        load(target + d);
+        if (d > 0 && d <= 8) load(target - d);
+      }
+      if (cache.size > 70) {
+        for (const k of cache.keys()) if (Math.abs(k - target) > 35) cache.delete(k);
+      }
+    }
+    function sizeCanvas(c) {
+      const r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+      c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr);
+    }
+    function paint() {
+      let i = target;
+      if (!cache.has(i)) {                     // show the nearest decoded frame instead of a blank
+        let best = -1;
+        for (const k of cache.keys()) if (best < 0 || Math.abs(k - i) < Math.abs(best - i)) best = k;
+        if (best < 0) return; i = best;
+      }
+      const img = cache.get(i), W = frames.width, H = frames.height;
+      const s = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+      const w = img.naturalWidth * s, h = img.naturalHeight * s;
+      fctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+      shown = i;
+    }
+    function setVariant() {
+      const v = pickVariant();
+      if (v === variant) return;
+      variant = v; cache = new Map(); inflight = new Set(); shown = -1;
+    }
+
+    /* static noise layer (alpha), cleared by scroll progress and by the pointer lens */
+    const nctx = noise.getContext("2d");
+    const SC = 3; let nw = 0, nh = 0, nimg, n32;
     const NOISE = new Uint8Array(65536);
     for (let i = 0; i < NOISE.length; i++) NOISE[i] = (Math.random() * 255) | 0;
-
-    const target = { x: 0.62, y: 0.42 }; // normalized
-    const lens = { x: 0.62, y: 0.42 };
-    let lastMove = -1e9, running = false, visible = true, raf = 0, last = 0, t = 0;
-
-    function resize() {
-      const r = canvas.getBoundingClientRect();
-      w = Math.max(80, Math.round(r.width / SCALE));
-      h = Math.max(60, Math.round(r.height / SCALE));
-      canvas.width = w; canvas.height = h;
-      img = ctx.createImageData(w, h);
-      buf32 = new Uint32Array(img.data.buffer);
+    const lens = { x: 0.62, y: 0.42 }, aim = { x: 0.62, y: 0.42 };
+    let lastMove = -1e9, t = 0;
+    function sizeNoise() {
+      const r = noise.getBoundingClientRect();
+      nw = Math.max(80, Math.round(r.width / SC)); nh = Math.max(60, Math.round(r.height / SC));
+      noise.width = nw; noise.height = nh; nimg = nctx.createImageData(nw, nh); n32 = new Uint32Array(nimg.data.buffer);
     }
-
-    function frame(now) {
-      raf = 0;
-      if (!running) return;
-      if (now - last < 33) { schedule(); return; } // ~30fps
-      last = now; t += 0.045;
-
-      // idle or touch: the lens drifts on its own along a slow lissajous
-      if (now - lastMove > 2500) {
-        target.x = 0.5 + 0.32 * Math.sin(t * 0.35);
-        target.y = 0.42 + 0.14 * Math.sin(t * 0.53 + 1.2);
-      }
-      lens.x += (target.x - lens.x) * 0.08;
-      lens.y += (target.y - lens.y) * 0.08;
-      draw();
-      schedule();
-    }
-    function schedule() { if (!raf && running) raf = requestAnimationFrame(frame); }
-
-    function draw() {
-      const lx = lens.x * w, ly = lens.y * h;
-      const r = Math.max(w, h) * 0.2, r2 = r * r;
+    function drawNoise() {
+      const strength = Math.max(0, 1 - progress / 0.6);      // gone by 60% of the stage
+      if (strength <= 0) { nctx.clearRect(0, 0, nw, nh); return; }
+      const lx = lens.x * nw, ly = lens.y * nh, r2 = Math.pow(Math.max(nw, nh) * 0.2, 2);
       let o = (Math.random() * 60000) | 0;
-      for (let y = 0; y < h; y++) {
-        const dy = y - ly, dy2 = dy * dy;
-        const row = y * w;
-        for (let x = 0; x < w; x++) {
-          const dx = x - lx;
-          const lock = Math.exp(-(dx * dx + dy2) / r2);       // 1 at lens centre
-          const k = 0.42 * (1 - 0.88 * lock);
-          const v = (NOISE[(o++) & 65535] * k) | 0;
-          // faint violet cast in the noise; little-endian ABGR
-          buf32[row + x] = 0xff000000 | ((v + 6) << 16) | ((v * 0.92) << 8) | (v * 0.96);
+      for (let y = 0; y < nh; y++) {
+        const dy2 = (y - ly) * (y - ly), row = y * nw;
+        for (let x = 0; x < nw; x++) {
+          const lock = Math.exp(-((x - lx) * (x - lx) + dy2) / r2);
+          const v = NOISE[(o++) & 65535];
+          const a = (strength * 235 * (1 - 0.9 * lock)) | 0;
+          n32[row + x] = (a << 24) | ((v * 0.9 + 12) << 16) | ((v * 0.86) << 8) | (v * 0.88);
         }
       }
-      ctx.putImageData(img, 0, 0);
-
-      // the signal: a sine trace that is chaos far from the lens, clean inside it
-      const cy = h * 0.42, amp = h * 0.07;
-      ctx.lineWidth = 1;
-      for (let x = 0; x < w - 1; x += 1) {
-        const dxa = x - lx, dxb = x + 1 - lx;
-        const la = Math.exp(-(dxa * dxa) / r2), lb = Math.exp(-(dxb * dxb) / r2);
-        const ja = (1 - la) * (Math.random() - 0.5) * amp * 2.4;
-        const jb = (1 - lb) * (Math.random() - 0.5) * amp * 2.4;
-        const ya = cy + Math.sin(x * 0.09 + t * 3) * amp + ja;
-        const yb = cy + Math.sin((x + 1) * 0.09 + t * 3) * amp + jb;
-        const a = 0.12 + 0.88 * la;
-        ctx.strokeStyle = "rgba(170,130,255," + a.toFixed(3) + ")";
-        ctx.beginPath(); ctx.moveTo(x, ya); ctx.lineTo(x + 1, yb); ctx.stroke();
+      nctx.putImageData(nimg, 0, 0);
+      const ta = Math.max(0, 1 - progress / 0.22);            // the trace hands over to the film
+      if (ta > 0) {
+        const cy = nh * 0.42, amp = nh * 0.07; nctx.lineWidth = 1;
+        for (let x = 0; x < nw - 1; x++) {
+          const la = Math.exp(-((x - lx) * (x - lx)) / r2);
+          const j = (1 - la) * (Math.random() - 0.5) * amp * 2.4;
+          nctx.strokeStyle = "rgba(170,130,255," + ((0.12 + 0.88 * la) * ta).toFixed(3) + ")";
+          nctx.beginPath();
+          nctx.moveTo(x, cy + Math.sin(x * 0.09 + t * 3) * amp + j);
+          nctx.lineTo(x + 1, cy + Math.sin((x + 1) * 0.09 + t * 3) * amp);
+          nctx.stroke();
+        }
       }
     }
 
-    function start() { if (!running && visible) { running = true; schedule(); } }
-    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+    function readProgress() {
+      const r = hero.getBoundingClientRect();
+      const span = hero.offsetHeight - window.innerHeight;
+      return span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+    }
+    function update() {
+      progress = readProgress();
+      const f = frameAt(progress);
+      hero.classList.toggle("is-past-open", progress > 0.16);
+      const rev = progress > 0.84;
+      if (rev !== hero.classList.contains("is-revealed")) {
+        hero.classList.toggle("is-revealed", rev);
+        const rc = hero.querySelector(".hero-copy--reveal");
+        rc.setAttribute("aria-hidden", String(!rev));
+        rc.querySelector("a").tabIndex = rev ? 0 : -1;
+      }
+      if (f !== target) { target = f; pump(); }
+      if (shown !== target) paint();
+    }
 
-    resize();
     if (reduce) {
-      lens.x = 0.62; lens.y = 0.42; draw();
-      window.addEventListener("resize", () => { resize(); draw(); });
+      // one still of the reveal, no frame sequence, no animation
+      hero.classList.add("is-still");
+      variant = pickVariant(); sizeCanvas(frames); target = N - 1; load(N - 1);
+      window.addEventListener("resize", () => { sizeCanvas(frames); setVariant(); target = N - 1; load(N - 1); paint(); });
     } else {
-      window.addEventListener("resize", () => { resize(); });
+      setVariant(); sizeCanvas(frames); sizeNoise(); load(0); update();
+      let ticking = false;
+      window.addEventListener("scroll", () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); }
+      }, { passive: true });
+      window.addEventListener("resize", () => { setVariant(); sizeCanvas(frames); sizeNoise(); shown = -1; update(); load(target); });
       window.addEventListener("pointermove", (e) => {
         if (e.pointerType === "touch") return;
-        const r = canvas.getBoundingClientRect();
-        if (e.clientY > r.bottom) return;
-        target.x = (e.clientX - r.left) / r.width;
-        target.y = (e.clientY - r.top) / r.height;
-        lastMove = performance.now();
+        aim.x = e.clientX / window.innerWidth; aim.y = e.clientY / window.innerHeight; lastMove = performance.now();
       }, { passive: true });
-      new IntersectionObserver(([en]) => { visible = en.isIntersecting; visible ? start() : stop(); })
-        .observe(canvas);
-      document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
-      start();
+      // noise animates at ~30fps only while the stage is on screen
+      let visible = true, last = 0;
+      new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) requestAnimationFrame(loop); }).observe(hero);
+      function loop(now) {
+        if (!visible || document.hidden) return;
+        if (now - last > 33) {
+          last = now; t += 0.045;
+          if (now - lastMove > 2500) { aim.x = 0.5 + 0.32 * Math.sin(t * 0.35); aim.y = 0.42 + 0.14 * Math.sin(t * 0.53 + 1.2); }
+          lens.x += (aim.x - lens.x) * 0.08; lens.y += (aim.y - lens.y) * 0.08;
+          drawNoise();
+        }
+        requestAnimationFrame(loop);
+      }
+      document.addEventListener("visibilitychange", () => { if (!document.hidden && visible) requestAnimationFrame(loop); });
+      requestAnimationFrame(loop);
     }
   }
 
   /* ---------- Header: solid once the hero scrolls away ---------- */
   const top = document.querySelector(".top");
   if (top) {
-    const onScroll = () => top.classList.toggle("is-scrolled", window.scrollY > 40);
+    const heroEl = document.querySelector(".hero");
+    // stays transparent over the film; turns solid once the stage has scrolled past
+    const onScroll = () => top.classList.toggle("is-scrolled",
+      window.scrollY > (heroEl ? heroEl.offsetHeight - 80 : 40));
     window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
   }
 
