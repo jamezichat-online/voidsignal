@@ -291,3 +291,38 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .tee a:hover .tee-cta:not(.tee-cta--soon) { color: var(--c); }
 .archive-shop { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; margin: clamp(2.5rem, 6vw, 4rem) 0 0; }
 .archive-shop span { font: italic 400 1.3rem/1.2 var(--serif); color: var(--mist); }
+
+/* Promo bar, offer, rails */
+:root { --promo-h: 38px; }
+.promo { position: fixed; inset: 0 0 auto 0; z-index: 30; height: var(--promo-h); display: flex; align-items: center; justify-content: center; gap: .7rem; padding: 0 var(--gutter);
+  background: var(--signal); color: var(--void); text-decoration: none; font: 600 .68rem/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+.promo span { background: var(--void); color: var(--bone); padding: .35rem .6rem; border-radius: 999px; }
+.promo b { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.top { top: var(--promo-h); }
+@media (max-width: 640px) { .promo { font-size: .56rem; letter-spacing: .12em; gap: .45rem; } .promo b { display: none; } }
+.offer { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem clamp(1.5rem, 4vw, 3.5rem); margin: 0 0 clamp(2.5rem, 5vw, 4rem); padding: clamp(1.4rem, 3vw, 2.4rem) clamp(1.4rem, 3.4vw, 3rem);
+  border-radius: 22px; background: linear-gradient(120deg, rgba(157,114,255,.20), rgba(157,114,255,.05) 60%); box-shadow: inset 0 0 0 1px rgba(201,182,255,.28), 0 40px 120px -50px rgba(157,114,255,.7); }
+.offer-num { margin: 0; font: 400 clamp(4.2rem, 11vw, 9rem)/.82 var(--cond); letter-spacing: -.01em; }
+.offer-kicker { margin: 0 0 .6rem; font: 600 .68rem/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--signal-hi, #c9b6ff); }
+.offer-text { margin: 0 0 .9rem; font: italic 400 clamp(1.3rem, 2.2vw, 1.9rem)/1.15 var(--serif); }
+.offer-clock { margin: 0; font: 600 clamp(1.1rem, 2vw, 1.5rem)/1 var(--sans); letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.offer-clock i { font-style: normal; color: var(--ash); margin: 0 .55rem 0 .15rem; font-size: .7em; letter-spacing: .1em; }
+@media (max-width: 760px) { .offer { grid-template-columns: 1fr; } .offer .btn { justify-self: start; } }
+.tees { margin-bottom: clamp(4rem, 9vw, 7rem); }
+.drops-head { display: grid; gap: .6rem; max-width: 46ch; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.drops-head h3 { font: 400 clamp(2.6rem, 6vw, 4.6rem)/.9 var(--cond); text-transform: uppercase; }
+.drops-head p:last-child { margin: 0; color: var(--mist); font: 400 1.05rem/1.5 var(--sans); }
+.rail { --c: var(--bone); margin-top: clamp(2rem, 4vw, 3.2rem); }
+.rail[data-channel="sr"] { --c: var(--sr); } .rail[data-channel="gym"] { --c: var(--gym); } .rail[data-channel="ct"] { --c: var(--ct); }
+.rail-head { display: flex; align-items: baseline; gap: 1.1rem; margin-bottom: 1.1rem; }
+.rail-head h3 { font: italic 400 clamp(1.9rem, 3.2vw, 2.6rem)/1 var(--serif); }
+.rail-head p { margin: 0; font: 600 .66rem/1 var(--sans); letter-spacing: .28em; text-transform: uppercase; color: var(--c); }
+.rail-track { list-style: none; margin: 0 calc(var(--gutter) * -1); padding: 0 var(--gutter) 1.2rem; display: flex; gap: clamp(12px, 1.6vw, 22px); overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-inline: var(--gutter); scrollbar-width: thin; scrollbar-color: rgba(201,182,255,.35) transparent; }
+.card { --c: var(--bone); flex: 0 0 clamp(220px, 26vw, 330px); scroll-snap-align: start; }
+.card[data-channel="sr"] { --c: var(--sr); } .card[data-channel="gym"] { --c: var(--gym); } .card[data-channel="ct"] { --c: var(--ct); }
+.card a { display: block; text-decoration: none; color: inherit; }
+.card figure { position: relative; margin: 0; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 6px; background: var(--smoke); box-shadow: 0 0 0 1px var(--line); transition: box-shadow .5s var(--ease), transform .6s var(--ease); }
+.card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1s var(--ease); }
+.card a:hover figure, .card a:focus-visible figure { transform: translateY(-4px); box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 55%, transparent), 0 30px 70px -20px rgba(0,0,0,.8), 0 0 50px -10px color-mix(in srgb, var(--c) 35%, transparent); }
+.card a:hover img { transform: scale(1.05); }
+.card .tee-meta::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: .6rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); vertical-align: 1px; }

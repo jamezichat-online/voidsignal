@@ -243,6 +243,24 @@
     }
   }
 
+  /* ---------- Launch offer countdown ---------- */
+  const clock = document.getElementById("clock");
+  if (clock) {
+    const end = Date.UTC(2026, 10, 5, 22, 59, 0);
+    const q = (u) => clock.querySelector('[data-u="' + u + '"]');
+    const tick = () => {
+      const left = end - Date.now();
+      if (left <= 0) { const o = document.getElementById("offer"); if (o) o.hidden = true; document.querySelector(".promo")?.remove(); return; }
+      const p = (n) => String(n).padStart(2, "0");
+      q("d").textContent = p(Math.floor(left / 864e5));
+      q("h").textContent = p(Math.floor(left / 36e5) % 24);
+      q("m").textContent = p(Math.floor(left / 6e4) % 60);
+      q("s").textContent = p(Math.floor(left / 1e3) % 60);
+      setTimeout(tick, 1000);
+    };
+    tick();
+  }
+
   /* ---------- Lineup: picking a design preselects its frequency in the form ---------- */
   document.querySelectorAll("[data-pick]").forEach((a) => a.addEventListener("click", () => {
     const r = document.querySelector('input[name="frequency"][value="' + a.dataset.pick + '"]');
