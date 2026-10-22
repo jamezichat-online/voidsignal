@@ -342,21 +342,21 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 /* tribes: flex column frame, fan zone above the title */
 .ch-frame { display: flex; flex-direction: column; height: auto; min-height: clamp(560px, 82svh, 780px); }
 .ch-zone { position: relative; z-index: 3; flex: 1; min-height: 290px; display: flex; align-items: center; padding: 28px 0 0 clamp(22px, 3.4vw, 52px); }
-.ch-copy { position: relative; z-index: 2; left: auto; bottom: auto; width: 56%; padding: 0 0 clamp(34px, 6vh, 64px) clamp(22px, 3.4vw, 52px); }
+.ch-copy { position: relative; z-index: 2; left: auto; right: auto; bottom: auto; width: 56%; padding: 0 0 clamp(34px, 6vh, 64px) clamp(22px, 3.4vw, 52px); }
 .fan { position: relative; left: auto; top: auto; flex: none; width: 380px; height: 290px; margin: 0; }
 @media (min-width: 641px) and (max-width: 860px) {
   .ch-zone { position: absolute; right: 4%; bottom: 17%; left: auto; padding: 0; min-height: 0; flex: none; }
   .fan { --cw: 108px; width: 230px; height: 150px; }
   .fan-card:nth-child(1) { --x: -54px; } .fan-card:nth-child(3) { --x: 54px; }
   .ch-frame { min-height: clamp(640px, 100svh, 900px); }
-  .ch-copy { width: auto; right: 0; }
+  .ch-copy { width: auto; right: auto; }
 }
 @media (max-width: 640px) {
   .ch-frame { min-height: clamp(640px, 100svh, 820px); }
   .ch-zone { flex: 1; align-items: flex-end; justify-content: flex-end; padding: 0 46px 0 0; margin-bottom: -10px; min-height: 0; }
   .fan { width: 190px; height: 120px; --cw: 70px; margin: 0; }
   .fan-card:nth-child(1) { --x: -44px; } .fan-card:nth-child(3) { --x: 44px; }
-  .ch-copy { width: auto; padding-right: 22px; padding-left: 22px; padding-bottom: 40px; }
+  .ch-copy { width: auto; padding-right: 26px; padding-left: 26px; padding-bottom: 40px; }
 }
 /* hero HUD on phones: bottom right */
 @media (max-width: 760px) {
