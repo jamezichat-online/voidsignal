@@ -279,3 +279,15 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 @media (prefers-reduced-motion: reduce) {
   .ch-panel, .ch-bg, .ch-name, .ch-line, .tee figure, .tee img, .hero-copy { transition: none !important; }
 }
+
+/* Shop channel */
+.top nav .nav-shop { color: var(--void); background: var(--bone); padding: .8rem 1.1rem; border-radius: 999px; }
+.top nav .nav-shop:hover { color: var(--void); background: #fff; box-shadow: 0 0 40px -6px rgba(157,114,255,.7); }
+@media (max-width: 640px) { .top nav a { display: none; } .top nav a.nav-shop { display: inline-block; padding: .7rem 1rem; } }
+.tee-cta { margin: .9rem 0 0; font: 600 .66rem/1 var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--bone); }
+.tee-cta::after { content: " \2192"; }
+.tee-cta--soon { color: var(--ash); }
+.tee-cta--soon::after { content: ""; }
+.tee a:hover .tee-cta:not(.tee-cta--soon) { color: var(--c); }
+.archive-shop { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; margin: clamp(2.5rem, 6vw, 4rem) 0 0; }
+.archive-shop span { font: italic 400 1.3rem/1.2 var(--serif); color: var(--mist); }
