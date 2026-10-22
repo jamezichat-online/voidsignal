@@ -138,6 +138,7 @@
       progress = readProgress();
       const f = frameAt(progress);
       hero.classList.toggle("is-past-open", progress > 0.16);
+      hero.classList.toggle("is-scrolled", progress > 0.012);
       const rev = progress > 0.84;
       if (rev !== hero.classList.contains("is-revealed")) {
         hero.classList.toggle("is-revealed", rev);

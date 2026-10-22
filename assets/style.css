@@ -421,3 +421,29 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .foot .btn { color: var(--void); }
 .foot .btn:hover { color: var(--void); }
 @media (max-width: 760px) { .hero-sticky { padding-bottom: 140px; } .hero-copy--reveal { bottom: 150px; } }
+
+/* scroll cue: a radio dial that keeps tuning until you scroll */
+.cue { position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%); display: grid; justify-items: center; gap: .55rem; pointer-events: none; transition: opacity .5s var(--ease), transform .6s var(--ease); }
+.hero.is-scrolled .cue { opacity: 0; transform: translate(-50%, 14px); }
+.cue-dial { position: relative; width: 210px; height: 30px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); mask-image: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); }
+.cue-scale { position: absolute; inset: 0 -60px; background:
+  repeating-linear-gradient(90deg, rgba(236,233,242,.55) 0 1px, transparent 1px 36px) bottom / 100% 20px no-repeat,
+  repeating-linear-gradient(90deg, rgba(236,233,242,.28) 0 1px, transparent 1px 6px) bottom / 100% 9px no-repeat;
+  animation: cuescan 5.5s ease-in-out infinite alternate; }
+.cue-needle { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--signal); box-shadow: 0 0 12px var(--signal), 0 0 28px var(--glow); animation: cueneedle 2.2s ease-in-out infinite; }
+.cue-text { margin: 0; font: 600 .62rem/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--mist); text-shadow: 0 1px 14px rgba(0,0,0,.9); animation: cuepulse 2.2s ease-in-out infinite; }
+.cue-arrow { width: 10px; height: 10px; border-right: 1.5px solid var(--signal); border-bottom: 1.5px solid var(--signal); transform: rotate(45deg); margin-top: -.1rem; animation: cuearrow 1.6s ease-in-out infinite; filter: drop-shadow(0 0 6px var(--glow)); }
+@keyframes cuescan { from { transform: translateX(-54px); } to { transform: translateX(0); } }
+@keyframes cueneedle { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes cuepulse { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes cuearrow { 0%, 100% { transform: translateY(0) rotate(45deg); opacity: .5; } 50% { transform: translateY(6px) rotate(45deg); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .cue-scale, .cue-needle, .cue-text, .cue-arrow { animation: none; } }
+.hero.is-still .cue { display: none; }
+@media (max-width: 760px) { .cue { bottom: 22px; } .cue-dial { width: 150px; } .cue-text { font-size: .54rem; letter-spacing: .22em; } }
+.cue { padding: .9rem 1.6rem 1rem; border-radius: 22px; background: rgba(3,3,4,.72); border: 1px solid rgba(201,182,255,.28); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); box-shadow: 0 0 40px -10px var(--glow), 0 20px 50px -20px rgba(0,0,0,.9); bottom: 30px; }
+.cue-text { font-size: .7rem; color: var(--bone); }
+.cue-scale { background:
+  repeating-linear-gradient(90deg, rgba(236,233,242,.9) 0 1px, transparent 1px 36px) bottom / 100% 20px no-repeat,
+  repeating-linear-gradient(90deg, rgba(236,233,242,.5) 0 1px, transparent 1px 6px) bottom / 100% 9px no-repeat; }
+@media (max-width: 760px) { .cue { padding: .75rem 1.1rem .85rem; bottom: 20px; } .cue-text { font-size: .58rem; } }
+@media (max-width: 760px) { .hud { transition: opacity .5s; } .hero:not(.is-scrolled) .hud { opacity: 0; } }
