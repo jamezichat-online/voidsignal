@@ -24,6 +24,7 @@
       return N - 1;
     };
 
+    const hud = { mhz: document.getElementById("hud-mhz"), bars: [...hero.querySelectorAll(".hud-bars i")], state: document.getElementById("hud-state") };
     const fctx = frames.getContext("2d");
     let ready = document.readyState === "complete";
     window.addEventListener("load", () => { ready = true; pump(); }, { once: true });
@@ -139,6 +140,12 @@
         rc.setAttribute("aria-hidden", String(!rev));
         rc.querySelector("a").tabIndex = rev ? 0 : -1;
       }
+      if (hud.mhz) {
+        hud.mhz.textContent = (87.6 + progress * 13.8).toFixed(1);
+        const lit = Math.round(Math.min(1, progress / 0.84) * 5);
+        hud.bars.forEach((b, i) => b.classList.toggle("on", i < lit));
+        hud.state.textContent = progress === 0 ? "Scroll to tune in" : rev ? "Signal locked" : "Tuning";
+      }
       if (f !== target) { target = f; pump(); }
       if (shown !== target) paint();
     }
@@ -187,16 +194,60 @@
     window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
   }
 
-  /* ---------- Frequencies: draw the wave when the row arrives ---------- */
-  const rows = document.querySelectorAll(".freq");
-  if ("IntersectionObserver" in window && !reduce) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("is-live"); io.unobserve(en.target); } });
-    }, { threshold: 0.35 });
-    rows.forEach((r) => io.observe(r));
-  } else {
-    rows.forEach((r) => r.classList.add("is-live"));
+  /* ---------- Manifesto: words light up with scroll ---------- */
+  const lit = document.getElementById("manifesto-lit");
+  if (lit) {
+    const words = lit.textContent.trim().split(/\s+/);
+    lit.innerHTML = words.map((w) => '<span class="w">' + w + "</span>").join(" ");
+    const spans = [...lit.querySelectorAll(".w")];
+    if (reduce) spans.forEach((w) => w.classList.add("on"));
+    else {
+      const onScroll = () => {
+        const r = lit.getBoundingClientRect(), vh = window.innerHeight;
+        const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.85 - vh * 0.25 + r.height * 0.6)));
+        const n = Math.round(p * spans.length);
+        spans.forEach((w, i) => w.classList.toggle("on", i < n));
+      };
+      window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    }
   }
+
+  /* ---------- Frequencies: change channel as you scroll, with a burst of static ---------- */
+  const stage = document.querySelector(".channels-stage");
+  if (stage) {
+    const panels = [...stage.querySelectorAll(".ch-panel")];
+    const dial = [...stage.querySelectorAll(".dial li")];
+    const st = stage.querySelector(".ch-static");
+    let current = 0;
+    const burst = () => {
+      const c = st.getContext("2d"), im = c.createImageData(st.width, st.height), d = im.data;
+      for (let i = 0; i < d.length; i += 4) { const v = Math.random() * 255; d[i] = v * .92 + 10; d[i + 1] = v * .86; d[i + 2] = v + 6; d[i + 3] = 255; }
+      c.putImageData(im, 0, 0);
+      st.classList.remove("flash"); void st.offsetWidth; st.classList.add("flash");
+    };
+    const set = (i) => {
+      if (i === current) return;
+      current = i;
+      panels.forEach((p, k) => p.classList.toggle("is-active", k === i));
+      dial.forEach((d, k) => d.classList.toggle("is-active", k === i));
+      burst();
+    };
+    if (reduce) { stage.classList.add("is-still"); panels.forEach((p) => p.classList.add("is-active")); }
+    else {
+      const onScroll = () => {
+        const r = stage.getBoundingClientRect(), span = stage.offsetHeight - window.innerHeight;
+        const p = span > 0 ? Math.min(0.999, Math.max(0, -r.top / span)) : 0;
+        set(Math.floor(p * panels.length));
+      };
+      window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    }
+  }
+
+  /* ---------- Lineup: picking a design preselects its frequency in the form ---------- */
+  document.querySelectorAll("[data-pick]").forEach((a) => a.addEventListener("click", () => {
+    const r = document.querySelector('input[name="frequency"][value="' + a.dataset.pick + '"]');
+    if (r) r.checked = true;
+  }));
 
   /* ---------- Drop 01 signup ---------- */
   const form = document.getElementById("signup");

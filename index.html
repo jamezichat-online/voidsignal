@@ -54,62 +54,115 @@
           <p class="reveal-sub">Street Rock tee from Drop 01. Torn-poster graphic, printed when you order.</p>
           <a class="btn" href="#drop" tabindex="-1">Join the Drop 01 list</a>
         </div>
-        <p class="tune-hint" aria-hidden="true">Scroll to tune in</p>
+        <div class="hud" aria-hidden="true">
+          <p class="hud-freq"><span id="hud-mhz">87.6</span> MHz</p>
+          <p class="hud-bars"><i></i><i></i><i></i><i></i><i></i></p>
+          <p class="hud-state" id="hud-state">Scroll to tune in</p>
+        </div>
       </div>
     </section>
 
     <section class="manifesto" aria-label="Manifesto">
-      <p>Most shirts are noise: the same slogan, the same stock graphic, the same feed. VoidSignal is the opposite. Every design starts on a blank canvas and ships only when it says something you can feel from across the street.</p>
+      <p class="lit" id="manifesto-lit">Most shirts are noise: the same slogan, the same stock graphic, the same feed. VoidSignal is the opposite. Every design starts on a blank canvas and ships only when it says something you can feel from across the street.</p>
       <p class="manifesto-small">Printed on demand, one at a time, when you order. No overstock, no landfill drops.</p>
     </section>
 
-    <section id="frequencies" class="frequencies" aria-labelledby="freq-title">
-      <h2 id="freq-title" class="section-title">Three frequencies</h2>
-
-      <article class="freq" data-channel="sr" aria-labelledby="sr-name">
-        <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 L60 60 L80 14 L100 106 L120 14 L140 106 L160 14 L180 106 L200 60 L320 60 L335 22 L350 98 L365 22 L380 98 L395 60 L560 60 L575 10 L590 110 L605 10 L620 110 L635 10 L650 110 L665 60 L820 60 L840 18 L860 102 L880 18 L900 102 L920 60 L1040 60 L1055 26 L1070 94 L1085 60 L1200 60"/></svg>
-        <div class="freq-body">
-          <h3 id="sr-name" class="freq-name">Street Rock</h3>
-          <div class="freq-text">
-            <p class="freq-code">VS/SR, overdrive wave</p>
-            <p>Skulls, strings and distortion. Raw graphics pulled from gig flyers, skate decks and amp stacks pushed past ten.</p>
-          </div>
-        <figure class="freq-media">
-            <img class="freq-main" src="/assets/img/sr-main-800.webp" srcset="/assets/img/sr-main-800.webp 800w, /assets/img/sr-main-1400.webp 1400w" sizes="(max-width: 760px) 92vw, 44vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a dim rock bar wearing the black Street Rock tee with the VoidSignal microphone shield graphic">
-            <img class="freq-detail" src="/assets/img/sr-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the Signal graphic: microphone, lightning bolts and the words loud, raw, power, noise">
-          </figure>
+    <section id="frequencies" class="channels-stage" aria-labelledby="freq-title">
+      <div class="ch-sticky">
+        <h2 id="freq-title" class="ch-title">Three frequencies</h2>
+        <div class="ch-panels">
+          <article class="ch-panel is-active" data-channel="sr" aria-labelledby="sr-name">
+            <img class="ch-bg" src="/assets/img/sr-main-800.webp" srcset="/assets/img/sr-main-800.webp 800w, /assets/img/sr-main-1400.webp 1400w" sizes="(max-width: 760px) 100vw, 56vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a dim rock bar wearing the black Street Rock tee with the VoidSignal microphone shield graphic">
+            <div class="ch-copy">
+              <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 60 L60 60 L80 14 L100 106 L120 14 L140 106 L160 14 L180 106 L200 60 L320 60 L335 22 L350 98 L365 22 L380 98 L395 60 L560 60 L575 10 L590 110 L605 10 L620 110 L635 10 L650 110 L665 60 L820 60 L840 18 L860 102 L880 18 L900 102 L920 60 L1040 60 L1055 26 L1070 94 L1085 60 L1200 60"/></svg>
+              <h3 id="sr-name" class="ch-name">Street Rock</h3>
+              <p class="ch-code">VS/SR, overdrive wave</p>
+              <p class="ch-text">Skulls, strings and distortion. Raw graphics pulled from gig flyers, skate decks and amp stacks pushed past ten.</p>
+            </div>
+            <img class="ch-detail" src="/assets/img/sr-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the Signal graphic: microphone, lightning bolts and the words loud, raw, power, noise">
+          </article>
+          <article class="ch-panel" data-channel="gym" aria-labelledby="gym-name">
+            <img class="ch-bg" src="/assets/img/gym-main-800.webp" srcset="/assets/img/gym-main-800.webp 800w, /assets/img/gym-main-1400.webp 1400w" sizes="(max-width: 760px) 100vw, 56vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man training curls in a gym wearing the charcoal Gym Tribe tee with the angular VS emblem">
+            <div class="ch-copy">
+              <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 70 L150 70 L170 62 L185 70 L210 70 L222 96 L240 8 L258 112 L272 70 L330 70 L350 58 L380 70 L520 70 L540 62 L555 70 L580 70 L592 96 L610 8 L628 112 L642 70 L700 70 L720 58 L750 70 L890 70 L910 62 L925 70 L950 70 L962 96 L980 8 L998 112 L1012 70 L1070 70 L1090 58 L1120 70 L1200 70"/></svg>
+              <h3 id="gym-name" class="ch-name">Gym</h3>
+              <p class="ch-code">VS/GYM, pulse wave</p>
+              <p class="ch-text">Heavy type and hard contrast for the sessions nobody sees. Built to be sweated in, washed, and worn again tomorrow.</p>
+            </div>
+            <img class="ch-detail" src="/assets/img/gym-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the Gym Tribe VS emblem printed on black fabric">
+          </article>
+          <article class="ch-panel" data-channel="ct" aria-labelledby="ct-name">
+            <img class="ch-bg" src="/assets/img/ct-main-800.webp" srcset="/assets/img/ct-main-800.webp 800w, /assets/img/ct-main-1400.webp 1400w" sizes="(max-width: 760px) 100vw, 56vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a neon-lit street at night wearing the black Cyber Tech tee with iridescent claw-scratch graphic">
+            <div class="ch-copy">
+              <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M0 90 L80 90 L80 30 L160 30 L160 90 L200 90 L200 30 L220 30 L220 90 L340 90 L340 30 L460 30 L460 90 L500 90 L500 30 L520 30 L520 90 L540 90 L540 30 L560 30 L560 90 L700 90 L700 30 L780 30 L780 90 L820 90 L820 30 L900 30 L900 90 L1000 90 L1000 30 L1020 30 L1020 90 L1200 90"/></svg>
+              <h3 id="ct-name" class="ch-name">Cyber Tech</h3>
+              <p class="ch-code">VS/CT, square wave</p>
+              <p class="ch-text">Circuits, glitches and interface ghosts. For people who read the source code of the world and still want it to look good.</p>
+            </div>
+            <img class="ch-detail" src="/assets/img/ct-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the iridescent claw scratches with circuit traces and the VoidSignal logo">
+          </article>
         </div>
-      </article>
+        <canvas class="ch-static" aria-hidden="true" width="160" height="90"></canvas>
+        <ol class="dial" aria-hidden="true"><li data-channel="sr" class="is-active"><span class="dial-n">01</span>Street Rock</li><li data-channel="gym"><span class="dial-n">02</span>Gym</li><li data-channel="ct"><span class="dial-n">03</span>Cyber Tech</li></ol>
+      </div>
+    </section>
 
-      <article class="freq" data-channel="gym" aria-labelledby="gym-name">
-        <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 L150 70 L170 62 L185 70 L210 70 L222 96 L240 8 L258 112 L272 70 L330 70 L350 58 L380 70 L520 70 L540 62 L555 70 L580 70 L592 96 L610 8 L628 112 L642 70 L700 70 L720 58 L750 70 L890 70 L910 62 L925 70 L950 70 L962 96 L980 8 L998 112 L1012 70 L1070 70 L1090 58 L1120 70 L1200 70"/></svg>
-        <div class="freq-body">
-          <h3 id="gym-name" class="freq-name">Gym</h3>
-          <div class="freq-text">
-            <p class="freq-code">VS/GYM, pulse wave</p>
-            <p>Heavy type and hard contrast for the sessions nobody sees. Built to be sweated in, washed, and worn again tomorrow.</p>
-          </div>
-        <figure class="freq-media">
-            <img class="freq-main" src="/assets/img/gym-main-800.webp" srcset="/assets/img/gym-main-800.webp 800w, /assets/img/gym-main-1400.webp 1400w" sizes="(max-width: 760px) 92vw, 44vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man training curls in a gym wearing the charcoal Gym Tribe tee with the angular VS emblem">
-            <img class="freq-detail" src="/assets/img/gym-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the Gym Tribe VS emblem printed on black fabric">
-          </figure>
-        </div>
-      </article>
-
-      <article class="freq" data-channel="ct" aria-labelledby="ct-name">
-        <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 90 L80 90 L80 30 L160 30 L160 90 L200 90 L200 30 L220 30 L220 90 L340 90 L340 30 L460 30 L460 90 L500 90 L500 30 L520 30 L520 90 L540 90 L540 30 L560 30 L560 90 L700 90 L700 30 L780 30 L780 90 L820 90 L820 30 L900 30 L900 90 L1000 90 L1000 30 L1020 30 L1020 90 L1200 90"/></svg>
-        <div class="freq-body">
-          <h3 id="ct-name" class="freq-name">Cyber Tech</h3>
-          <div class="freq-text">
-            <p class="freq-code">VS/CT, square wave</p>
-            <p>Circuits, glitches and interface ghosts. For people who read the source code of the world and still want it to look good.</p>
-          </div>
-        <figure class="freq-media">
-            <img class="freq-main" src="/assets/img/ct-main-800.webp" srcset="/assets/img/ct-main-800.webp 800w, /assets/img/ct-main-1400.webp 1400w" sizes="(max-width: 760px) 92vw, 44vw" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a neon-lit street at night wearing the black Cyber Tech tee with iridescent claw-scratch graphic">
-            <img class="freq-detail" src="/assets/img/ct-detail-700.webp" width="700" height="700" loading="lazy" decoding="async" alt="Close-up of the iridescent claw scratches with circuit traces and the VoidSignal logo">
-          </figure>
-        </div>
-      </article>
+    <section id="lineup" class="lineup" aria-labelledby="lineup-title">
+      <div class="lineup-head">
+        <h2 id="lineup-title" class="section-title">Drop 01 lineup</h2>
+        <p>Seven designs across three frequencies. Pick the one you want and join the list: you'll get a message the moment it can be ordered.</p>
+      </div>
+      <ul class="tees">
+        <li class="tee" data-channel="sr">
+          <a href="#drop" data-pick="street-rock">
+            <figure><img src="/assets/lineup/sr-signal.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Signal design, Street Rock frequency"></figure>
+            <p class="tee-name">Signal</p>
+            <p class="tee-meta"><span class="tee-freq">Street Rock</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+        <li class="tee" data-channel="sr">
+          <a href="#drop" data-pick="street-rock">
+            <figure><img src="/assets/lineup/sr-torn.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Torn Poster design, Street Rock frequency"></figure>
+            <p class="tee-name">Torn Poster</p>
+            <p class="tee-meta"><span class="tee-freq">Street Rock</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+        <li class="tee" data-channel="sr">
+          <a href="#drop" data-pick="street-rock">
+            <figure><img src="/assets/lineup/sr-loud-chaos.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Loud Chaos design, Street Rock frequency"></figure>
+            <p class="tee-name">Loud Chaos</p>
+            <p class="tee-meta"><span class="tee-freq">Street Rock</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+        <li class="tee" data-channel="sr">
+          <a href="#drop" data-pick="street-rock">
+            <figure><img src="/assets/lineup/sr-no-future.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="No Future design, Street Rock frequency"></figure>
+            <p class="tee-name">No Future</p>
+            <p class="tee-meta"><span class="tee-freq">Street Rock</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+        <li class="tee" data-channel="gym">
+          <a href="#drop" data-pick="gym">
+            <figure><img src="/assets/lineup/gym-tribe.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Gym Tribe design, Gym frequency"></figure>
+            <p class="tee-name">Gym Tribe</p>
+            <p class="tee-meta"><span class="tee-freq">Gym</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+        <li class="tee" data-channel="gym">
+          <a href="#drop" data-pick="gym">
+            <figure><img src="/assets/lineup/gym-dynamic.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Dynamic design, Gym frequency"></figure>
+            <p class="tee-name">Dynamic</p>
+            <p class="tee-meta"><span class="tee-freq">Gym</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+        <li class="tee" data-channel="ct">
+          <a href="#drop" data-pick="cyber-tech">
+            <figure><img src="/assets/lineup/ct-claw.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="Claw design, Cyber Tech frequency"></figure>
+            <p class="tee-name">Claw</p>
+            <p class="tee-meta"><span class="tee-freq">Cyber Tech</span> <span class="tee-state">Coming in Drop 01</span></p>
+          </a>
+        </li>
+      </ul>
     </section>
 
     <section id="drop" class="drop" aria-labelledby="drop-title">
@@ -146,7 +199,7 @@
   </main>
 
   <footer class="foot">
-    <p class="foot-mark"><img src="/assets/img/logo-160.png" width="80" height="60" alt="VoidSignal"></p>
+    <p class="foot-mark"><img src="/assets/img/logo-1000.png" width="1000" height="743" loading="lazy" alt="VoidSignal"></p>
     <ul>
       <li><a href="mailto:info@voidsignalbrand.com">info@voidsignalbrand.com</a></li>
       <li><a href="https://www.instagram.com/voidsignalbrand/" rel="noopener" target="_blank">Instagram</a></li>
