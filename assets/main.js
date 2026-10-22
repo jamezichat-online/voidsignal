@@ -2,6 +2,9 @@
   "use strict";
   const API = "https://voidsignal-api.smartlabdesign-tools.workers.dev/subscribe";
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // always open at the top, never at a restored position
+  try { if ("scrollRestoration" in history) history.scrollRestoration = "manual"; } catch (e) {}
+  if (!location.hash) window.scrollTo(0, 0);
 
   /* ---------- Hero: scroll-scrubbed film under a tunable static field ---------- */
   const hero = document.querySelector(".hero");
@@ -91,6 +94,7 @@
     let lastMove = -1e9, t = 0;
     function sizeNoise() {
       const r = noise.getBoundingClientRect();
+      if (r.width < 50 || r.height < 50) return;
       nw = Math.max(80, Math.round(r.width / SC)); nh = Math.max(60, Math.round(r.height / SC));
       noise.width = nw; noise.height = nh; nimg = nctx.createImageData(nw, nh); n32 = new Uint32Array(nimg.data.buffer);
     }
@@ -163,6 +167,12 @@
         if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; update(); }); }
       }, { passive: true });
       window.addEventListener("resize", () => { setVariant(); sizeCanvas(frames); sizeNoise(); shown = -1; update(); load(target); });
+      // sizes are re-read whenever the stage actually changes size (late CSS, toolbar, rotation)
+      if ("ResizeObserver" in window) {
+        let ro = 0;
+        new ResizeObserver(() => { cancelAnimationFrame(ro); ro = requestAnimationFrame(() => { sizeCanvas(frames); sizeNoise(); shown = -1; update(); }); }).observe(hero.querySelector(".hero-sticky"));
+      }
+      window.addEventListener("load", () => { sizeCanvas(frames); sizeNoise(); shown = -1; update(); }, { once: true });
       window.addEventListener("pointermove", (e) => {
         if (e.pointerType === "touch") return;
         aim.x = e.clientX / window.innerWidth; aim.y = e.clientY / window.innerHeight; lastMove = performance.now();
@@ -183,6 +193,14 @@
       document.addEventListener("visibilitychange", () => { if (!document.hidden && visible) requestAnimationFrame(loop); });
       requestAnimationFrame(loop);
     }
+  }
+
+  /* ---------- Mobile menu ---------- */
+  const topbar = document.querySelector(".top"), mbtn = document.querySelector(".menu-btn");
+  if (topbar && mbtn) {
+    const setOpen = (o) => { topbar.classList.toggle("is-open", o); mbtn.setAttribute("aria-expanded", String(o)); };
+    mbtn.addEventListener("click", () => setOpen(!topbar.classList.contains("is-open")));
+    topbar.querySelectorAll("nav a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
   }
 
   /* ---------- Header: solid once the hero scrolls away ---------- */
@@ -255,11 +273,43 @@
     if (r) r.checked = true;
   }));
 
+  /* ---------- Footer spot: plays while on screen, sound on request ---------- */
+  const spot = document.getElementById("spot"), spotBtn = document.getElementById("spot-sound");
+  if (spot) {
+    if ("IntersectionObserver" in window && !reduce) {
+      new IntersectionObserver(([e]) => { if (e.isIntersecting) { spot.play().catch(() => {}); } else spot.pause(); }, { threshold: 0.35 }).observe(spot);
+    }
+    if (spotBtn) spotBtn.addEventListener("click", () => {
+      spot.muted = !spot.muted; if (!spot.muted) { spot.currentTime = 0; spot.play().catch(() => {}); }
+      spotBtn.textContent = spot.muted ? "Sound off" : "Sound on"; spotBtn.setAttribute("aria-pressed", String(!spot.muted));
+    });
+  }
+
+  /* ---------- Amp knob ---------- */
+  const knob = document.getElementById("knob");
+  let setKnob = () => {}, turnKnob = () => Promise.resolve(), kval = 2;
+  if (knob) {
+    const body = knob.querySelector(".knob-body"), ticksEl = document.querySelector(".knob-ticks");
+    for (let i = 0; i <= 10; i++) { const s = document.createElement("span"); s.style.setProperty("--t", (-135 + i * 27) + "deg"); if (i % 5 === 0) s.className = "maj"; ticksEl.appendChild(s); }
+    const ticks = [...ticksEl.children];
+    setKnob = (v) => { kval = v; body.style.transform = "rotate(" + (-135 + v * 27) + "deg)"; ticks.forEach((t, i) => t.classList.toggle("on", i <= v + 0.001)); };
+    turnKnob = (to, ms) => new Promise((res) => {
+      if (reduce) { setKnob(to); return res(); }
+      const from = kval, t0 = performance.now();
+      const step = (now) => { const k = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - k, 3); setKnob(from + (to - from) * e); k < 1 ? requestAnimationFrame(step) : res(); };
+      requestAnimationFrame(step);
+    });
+    setKnob(2);
+    knob.addEventListener("mouseenter", () => { if (!knob.disabled && kval < 3) turnKnob(3, 300); });
+    knob.addEventListener("mouseleave", () => { if (!knob.disabled && kval <= 3) turnKnob(2, 300); });
+  }
+
   /* ---------- Drop 01 signup ---------- */
   const form = document.getElementById("signup");
   if (form) {
     const status = form.querySelector(".form-status");
-    const btn = form.querySelector("button[type=submit]");
+    const btn = form.querySelector("button[type=submit]"), wrap = document.getElementById("knob-wrap");
+    const shake = () => { if (!wrap) return; wrap.classList.remove("is-shake"); void wrap.offsetWidth; wrap.classList.add("is-shake"); };
     const say = (msg, kind) => { status.textContent = msg; status.className = "form-status " + (kind || ""); };
 
     form.addEventListener("submit", async (e) => {
@@ -268,13 +318,14 @@
       const email = String(fd.get("email") || "").trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
         say("Enter a valid email address, like name@example.com.", "err");
-        form.email.focus(); return;
+        shake(); form.email.focus(); return;
       }
       if (!form.consent.checked) {
         say("Tick the consent box so we can send you the transmission.", "err");
-        form.consent.focus(); return;
+        shake(); form.consent.focus(); return;
       }
       btn.disabled = true; say("Tuning in…");
+      const turned = turnKnob(10, 1100);
       try {
         const res = await fetch(API, {
           method: "POST",
@@ -285,16 +336,18 @@
           }),
         });
         const data = await res.json().catch(() => ({}));
+        await turned;
         if (res.ok && data.ok) {
           form.reset();
           say("You're on the frequency. The next transmission reaches you first.", "ok");
+          setTimeout(() => turnKnob(2, 900), 2600);
         } else if (data.error === "email") {
-          say("That email doesn't look right. Check it and try again.", "err");
+          say("That email doesn't look right. Check it and try again.", "err"); turnKnob(2, 600);
         } else {
-          say("The signal dropped. Try again in a minute, or write to info@voidsignalbrand.com.", "err");
+          say("The signal dropped. Try again in a minute, or write to info@voidsignalbrand.com.", "err"); turnKnob(2, 600);
         }
       } catch {
-        say("No connection. Check your network and try again.", "err");
+        say("No connection. Check your network and try again.", "err"); await turned; turnKnob(2, 600);
       } finally {
         btn.disabled = false;
       }
