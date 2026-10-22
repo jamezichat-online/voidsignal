@@ -27,6 +27,9 @@
       return N - 1;
     };
 
+    const LOCK = 101.3;
+    let tuneTarget = null;
+    const tunerEl = hero.querySelector(".tuner");
     const hud = { mhz: document.getElementById("hud-mhz"), bars: [...hero.querySelectorAll(".hud-bars i")], state: document.getElementById("hud-state") };
     const fctx = frames.getContext("2d");
     let ready = document.readyState === "complete";
@@ -146,14 +149,39 @@
         rc.setAttribute("aria-hidden", String(!rev));
         rc.querySelector("a").tabIndex = rev ? 0 : -1;
       }
-      if (hud.mhz) {
-        hud.mhz.textContent = (87.6 + progress * 13.8).toFixed(1);
-        const lit = Math.round(Math.min(1, progress / 0.84) * 5);
-        hud.bars.forEach((b, i) => b.classList.toggle("on", i < lit));
-        hud.state.textContent = progress === 0 ? "Scroll to tune in" : rev ? "Signal received" : "Tuning";
-      }
+      const lit = Math.round(Math.min(1, progress / 0.84) * 5);
+      hud.bars.forEach((b, i) => b.classList.toggle("on", i < lit));
+      hud.state.textContent = progress <= 0.012 ? "Scroll to tune in" : rev ? "Signal received" : "Tuning";
+      tuneTarget = progress <= 0.012 ? null : rev ? LOCK : 87.6 + (progress / 0.84) * (LOCK - 87.6);
+      tunerEl && tunerEl.classList.toggle("is-locked", rev);
       if (f !== target) { target = f; pump(); }
       if (shown !== target) paint();
+    }
+
+    /* the tuner: a frequency scale that slides under a fixed needle until the right station locks */
+    const PX = 44, F0 = 84, F1 = 105, scaleEl = document.getElementById("tuner-scale");
+    if (scaleEl && !reduce) {
+      scaleEl.style.width = (F1 - F0) * PX + "px";
+      for (let n = F0 + 1; n < F1; n++) { const s = document.createElement("span"); s.className = "tl"; s.style.left = (n - F0) * PX + "px"; s.textContent = n; scaleEl.appendChild(s); }
+      const mk = document.createElement("span"); mk.className = "tmark"; mk.style.left = (LOCK - F0) * PX + "px"; scaleEl.appendChild(mk);
+      const dialEl = scaleEl.parentNode;
+      let fd = 87.6, tt = 0, tv = true;
+      new IntersectionObserver(([e]) => { tv = e.isIntersecting; if (tv) requestAnimationFrame(tloop); }).observe(hero);
+      function tloop() {
+        if (!tv || document.hidden) return;
+        tt += 0.016;
+        const idle = tuneTarget === null;
+        const want = idle ? 87.6 + 1.4 * (0.5 + 0.5 * Math.sin(tt * 1.3)) : tuneTarget;
+        fd += (want - fd) * (idle ? 0.06 : 0.14);
+        const locked = tuneTarget === LOCK && Math.abs(fd - LOCK) < 0.05;
+        const jit = locked ? 0 : (idle ? 2.2 : Math.max(0.4, 2.4 * (1 - Math.min(1, progress / 0.84)))) * (Math.random() - 0.5);
+        const cx = dialEl.clientWidth / 2;
+        scaleEl.style.transform = "translateX(" + (cx - (fd - F0) * PX + jit) + "px)";
+        if (hud.mhz) hud.mhz.textContent = (locked ? LOCK : fd).toFixed(1);
+        requestAnimationFrame(tloop);
+      }
+      document.addEventListener("visibilitychange", () => { if (!document.hidden && tv) requestAnimationFrame(tloop); });
+      requestAnimationFrame(tloop);
     }
 
     if (reduce) {

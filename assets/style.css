@@ -447,3 +447,30 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
   repeating-linear-gradient(90deg, rgba(236,233,242,.5) 0 1px, transparent 1px 6px) bottom / 100% 9px no-repeat; }
 @media (max-width: 760px) { .cue { padding: .75rem 1.1rem .85rem; bottom: 20px; } .cue-text { font-size: .58rem; } }
 @media (max-width: 760px) { .hud { transition: opacity .5s; } .hero:not(.is-scrolled) .hud { opacity: 0; } }
+
+/* functional tuner (replaces the side readout) */
+.hud { display: none !important; }
+.hero.is-scrolled .cue { opacity: 1; transform: translateX(-50%); }
+.hero.is-scrolled .cue-arrow { display: none; }
+.tuner { width: 330px; gap: .7rem; padding: 1rem 1.3rem 1.05rem; bottom: 28px; }
+.tuner-top { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.tuner-freq { margin: 0; display: flex; align-items: baseline; gap: .35rem; white-space: nowrap; }
+.tuner-freq span { font: 400 2.1rem/1 var(--cond); letter-spacing: .01em; color: var(--bone); font-variant-numeric: tabular-nums; min-width: 4.2ch; }
+.tuner-freq i { font: 600 .6rem/1 var(--sans); font-style: normal; letter-spacing: .26em; color: var(--ash); }
+.tuner .hud-bars { margin: 0 !important; }
+.tuner-dial { position: relative; width: 100%; height: 38px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); }
+.tuner-scale { position: absolute; left: 0; top: 0; height: 100%; will-change: transform;
+  background:
+    repeating-linear-gradient(90deg, rgba(236,233,242,.95) 0 1px, transparent 1px 44px) bottom / 100% 20px no-repeat,
+    repeating-linear-gradient(90deg, rgba(236,233,242,.6) 0 1px, transparent 1px 22px) bottom / 100% 13px no-repeat,
+    repeating-linear-gradient(90deg, rgba(236,233,242,.4) 0 1px, transparent 1px 4.4px) bottom / 100% 7px no-repeat; }
+.tuner-scale .tl { position: absolute; top: 0; transform: translateX(-50%); font: 600 .56rem/1 var(--sans); letter-spacing: .08em; color: var(--mist); }
+.tuner-scale .tmark { position: absolute; bottom: 0; width: 7px; height: 7px; margin-left: -3.5px; margin-bottom: 21px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 10px var(--signal); opacity: .55; }
+.tuner .cue-needle, .tuner-needle { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--signal); box-shadow: 0 0 12px var(--signal), 0 0 28px var(--glow); animation: cueneedle 2.2s ease-in-out infinite; transition: background .3s, box-shadow .3s; }
+.tuner-state { margin: 0; font: 600 .62rem/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--mist); animation: cuepulse 2.2s ease-in-out infinite; }
+.hero.is-scrolled .tuner-state { animation: none; }
+.tuner.is-locked { border-color: rgba(201,182,255,.7); box-shadow: 0 0 60px -6px var(--glow), 0 20px 50px -20px rgba(0,0,0,.9); }
+.tuner.is-locked .tuner-needle { background: #fff; animation: none; box-shadow: 0 0 16px #fff, 0 0 40px var(--signal); }
+.tuner.is-locked .tuner-state { color: var(--signal); animation: none; }
+.tuner.is-locked .tmark { opacity: 1; transform: scale(1.5); }
+@media (max-width: 760px) { .tuner { width: min(300px, calc(100vw - 36px)); bottom: 18px; padding: .8rem 1rem .9rem; } .tuner-freq span { font-size: 1.7rem; } }
