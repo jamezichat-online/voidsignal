@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://voidsignalbrand.com/sitemap.xml
