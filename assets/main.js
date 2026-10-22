@@ -97,14 +97,15 @@
     function drawNoise() {
       const strength = Math.max(0, 1 - progress / 0.6);      // gone by 60% of the stage
       if (strength <= 0) { nctx.clearRect(0, 0, nw, nh); return; }
-      const lx = lens.x * nw, ly = lens.y * nh, r2 = Math.pow(Math.max(nw, nh) * 0.2, 2);
+      const lx = lens.x * nw, ly = lens.y * nh, R = Math.max(nw, nh) * 0.2, r2 = R * R, p2 = R * R * 0.36;
       let o = (Math.random() * 60000) | 0;
       for (let y = 0; y < nh; y++) {
         const dy2 = (y - ly) * (y - ly), row = y * nw;
         for (let x = 0; x < nw; x++) {
-          const lock = Math.exp(-((x - lx) * (x - lx) + dy2) / r2);
+          const d2 = (x - lx) * (x - lx) + dy2;
+          const lock = d2 < p2 ? 1 : Math.exp(-(d2 - p2) / r2);   // hard-clear core, soft edge
           const v = NOISE[(o++) & 65535];
-          const a = (strength * 185 * (1 - 0.9 * lock)) | 0;
+          const a = (strength * 185 * (1 - lock)) | 0;
           n32[row + x] = (a << 24) | ((v * 0.9 + 12) << 16) | ((v * 0.86) << 8) | (v * 0.88);
         }
       }
@@ -212,34 +213,21 @@
     }
   }
 
-  /* ---------- Frequencies: change channel as you scroll, with a burst of static ---------- */
+  /* ---------- Tribes: plain scroll; each stage animates in when it arrives ---------- */
   const stage = document.querySelector(".channels-stage");
   if (stage) {
     const panels = [...stage.querySelectorAll(".ch-panel")];
-    const dial = [...stage.querySelectorAll(".dial li")];
-    const st = stage.querySelector(".ch-static");
-    let current = 0;
-    const burst = () => {
-      const c = st.getContext("2d"), im = c.createImageData(st.width, st.height), d = im.data;
-      for (let i = 0; i < d.length; i += 4) { const v = Math.random() * 255; d[i] = v * .92 + 10; d[i + 1] = v * .86; d[i + 2] = v + 6; d[i + 3] = 255; }
-      c.putImageData(im, 0, 0);
-      st.classList.remove("flash"); void st.offsetWidth; st.classList.add("flash");
-    };
-    const set = (i) => {
-      if (i === current) return;
-      current = i;
-      panels.forEach((p, k) => p.classList.toggle("is-active", k === i));
-      dial.forEach((d, k) => d.classList.toggle("is-active", k === i));
-      burst();
-    };
-    if (reduce) { stage.classList.add("is-still"); panels.forEach((p) => p.classList.add("is-active")); }
+    const dial = stage.querySelector(".dial");
+    const items = [...dial.querySelectorAll("li")];
+    if (!("IntersectionObserver" in window) || reduce) panels.forEach((p) => p.classList.add("is-active"));
     else {
-      const onScroll = () => {
-        const r = stage.getBoundingClientRect(), span = stage.offsetHeight - window.innerHeight;
-        const p = span > 0 ? Math.min(0.999, Math.max(0, -r.top / span)) : 0;
-        set(Math.floor(p * panels.length));
-      };
-      window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-active"); io.unobserve(e.target); } }), { threshold: 0.28 });
+      panels.forEach((p) => io.observe(p));
+      const cur = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) items.forEach((li) => li.classList.toggle("is-active", li.dataset.channel === e.target.dataset.channel));
+      }), { rootMargin: "-45% 0px -45% 0px" });
+      panels.forEach((p) => cur.observe(p));
+      new IntersectionObserver(([e]) => dial.classList.toggle("is-on", e.isIntersecting), { rootMargin: "-20% 0px -20% 0px" }).observe(stage);
     }
   }
 
