@@ -474,3 +474,17 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .tuner.is-locked .tuner-state { color: var(--signal); animation: none; }
 .tuner.is-locked .tmark { opacity: 1; transform: scale(1.5); }
 @media (max-width: 760px) { .tuner { width: min(300px, calc(100vw - 36px)); bottom: 18px; padding: .8rem 1rem .9rem; } .tuner-freq span { font-size: 1.7rem; } }
+
+/* tuner: simplified, smaller, iOS-safe (no backdrop-filter / masks inside the sticky stage) */
+.tuner { width: 250px; padding: .7rem 1rem .8rem; gap: .5rem; left: 50%; margin-left: -125px; transform: none; z-index: 6; bottom: 26px;
+  background: rgba(3,3,4,.84); -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 16px; }
+.hero.is-scrolled .cue { transform: none; opacity: 1; }
+.tuner-dial { height: 30px; -webkit-mask-image: none; mask-image: none; }
+.tuner-dial::before, .tuner-dial::after { content: ""; position: absolute; top: 0; bottom: 0; width: 28%; z-index: 2; pointer-events: none; }
+.tuner-dial::before { left: 0; background: linear-gradient(90deg, rgb(8,8,10), rgba(8,8,10,0)); }
+.tuner-dial::after { right: 0; background: linear-gradient(270deg, rgb(8,8,10), rgba(8,8,10,0)); }
+.tuner-scale { will-change: auto; }
+.tuner .tuner-needle { z-index: 3; }
+.tuner-scale .tl { font-size: .5rem; }
+.tuner-state { font-size: .56rem; }
+@media (max-width: 760px) { .tuner { width: 210px; margin-left: -105px; padding: .6rem .8rem .7rem; bottom: 16px; } .hero-sticky { padding-bottom: 120px; } .hero-copy--reveal { bottom: 118px; } }
