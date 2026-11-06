@@ -245,8 +245,12 @@
   /* ---------- Manifesto: words light up with scroll ---------- */
   const lit = document.getElementById("manifesto-lit");
   if (lit) {
-    const words = lit.textContent.trim().split(/\s+/);
-    lit.innerHTML = words.map((w) => '<span class="w">' + w + "</span>").join(" ");
+    const out = [];
+    lit.childNodes.forEach((n) => {
+      const em = n.nodeType === 1 && n.tagName === "EM";
+      (n.textContent || "").trim().split(/\s+/).filter(Boolean).forEach((w) => out.push('<span class="w' + (em ? " em" : "") + '">' + w + "</span>"));
+    });
+    lit.innerHTML = out.join(" ");
     const spans = [...lit.querySelectorAll(".w")];
     if (reduce) spans.forEach((w) => w.classList.add("on"));
     else {
