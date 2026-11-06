@@ -566,3 +566,9 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .rackwrap .vsr #scene { width: 100%; }
 .rackwrap .vsr-sound { right: max(16px, calc((100% - 1600px) / 2 + 16px)); }
 .rackwrap:not(.no-webgl) .rack-list { display: none; }
+
+/* tribes on small screens: title always on one line */
+@media (max-width: 860px) {
+  .ch-copy { width: 100%; padding-right: 22px; padding-top: 22px; }
+  .ch-name { white-space: nowrap; font-size: clamp(3.2rem, 19vw, 6.6rem); }
+}
