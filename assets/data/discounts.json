@@ -1,0 +1,5 @@
+{
+  "_help": "One entry per shop. Set active:true and a future 'end' (ISO 8601, UTC) to show the promo bar and the offer block for that shop only. They disappear on their own at 'end'. 'code' is optional.",
+  "eu": { "active": false, "pct": 25, "kicker": "Launch offer", "text": "On the whole shop.", "end": "2026-11-05T22:59:00Z", "code": "" },
+  "us": { "active": true,  "pct": 25, "kicker": "Launch offer", "text": "On the whole shop.", "end": "2026-11-06T23:59:00Z", "code": "" }
+}

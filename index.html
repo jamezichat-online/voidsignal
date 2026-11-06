@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>VoidSignal — Not everyone hears it</title>
-  <meta name="description" content="VoidSignal is a signal for three tribes: the stage, the iron and the grid. Street Rock, Gym and Cyber Tech. Transmission 01 is incoming.">
+  <meta name="description" content="VoidSignal is a signal for three tribes: the stage, the iron and the grid. Street Rock, Gym and Cyber Tech. Browse every design in the rack and shop it.">
   <link rel="canonical" href="https://voidsignalbrand.com/">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#030304">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="VoidSignal">
   <meta property="og:title" content="VoidSignal — Not everyone hears it">
-  <meta property="og:description" content="Three tribes. One signal. Transmission 01 is incoming.">
+  <meta property="og:description" content="Three tribes. One signal. Browse every design in the rack and shop it.">
   <meta property="og:url" content="https://voidsignalbrand.com/">
   <meta property="og:image" content="https://voidsignalbrand.com/assets/og.jpg">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,8 @@
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/assets/style.css?v=20261022b">
+  <link rel="stylesheet" href="/assets/style.css?v=20261106a">
+  <link rel="stylesheet" href="/assets/rack/dist/rack.css?v=20261106a">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Organization","name":"VoidSignal","url":"https://voidsignalbrand.com/","email":"info@voidsignalbrand.com","sameAs":["https://www.instagram.com/voidsignalbrand/"],"slogan":"Not everyone hears it."}
   </script>
@@ -29,16 +30,17 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
-  <a class="promo" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank"><span>Launch offer</span> 25% off the whole shop &middot; 14 days <b>Shop now &rarr;</b></a>
+  <a class="promo" id="promo" href="https://voidsignal.myspreadshop.it/shop" data-shop-path="/shop" rel="noopener" target="_blank" hidden><span id="promo-k">Offer</span> <em id="promo-t"></em> <b>Shop now &rarr;</b></a>
 
   <header class="top">
     <a class="wordmark" href="/"><img src="/assets/img/logo-160.png" width="160" height="119" alt="VoidSignal"></a>
-    <div class="top-m"><a class="nav-shop shop-m" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop</a><button class="menu-btn" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Menu"><i></i><i></i></button></div>
+    <div class="top-m"><div class="region" role="group" aria-label="Shop region"><button type="button" data-r="eu" aria-pressed="true">EU</button><button type="button" data-r="us" aria-pressed="false">US</button></div><a class="nav-shop shop-m" data-shop-path="/shop" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop</a><button class="menu-btn" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Menu"><i></i><i></i></button></div>
     <nav id="primary-nav" aria-label="Primary">
       <a href="#tribes">Tribes</a>
-      <a href="#transmission">Transmission 01</a>
+      <a href="#rack">The Rack</a>
       <a href="#receive">Next drop</a>
-      <a class="nav-shop" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop</a>
+      <div class="region" role="group" aria-label="Shop region"><button type="button" data-r="eu" aria-pressed="true">EU</button><button type="button" data-r="us" aria-pressed="false">US</button></div>
+      <a class="nav-shop" data-shop-path="/shop" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop</a>
     </nav>
   </header>
 
@@ -57,7 +59,7 @@
           <p class="kicker">Signal received</p>
           <p class="reveal-title">Torn Signal</p>
           <p class="reveal-sub">Street Rock / 01 — the first mark of Transmission 01.</p>
-          <a class="btn" href="https://voidsignal.myspreadshop.it/void+signal+torn+signal+street+rock-A326cd44e800d9b89" rel="noopener" target="_blank" tabindex="-1">Shop Torn Signal</a>
+          <a class="btn" data-design="Torn Signal" href="https://voidsignal.myspreadshop.it/void+signal+torn+signal+street+rock-A326cd44e800d9b89" rel="noopener" target="_blank" tabindex="-1">Shop Torn Signal</a>
         </div>
         <div class="cue tuner" aria-hidden="true">
           <div class="tuner-dial"><div class="tuner-scale" id="tuner-scale"></div><span class="tuner-needle"></span></div>
@@ -85,6 +87,7 @@
                 <p class="ch-freq">Street Rock</p>
                 <h3 id="sr-name" class="ch-name">The Stage</h3>
                 <p class="ch-line">For the ones who stay after the last song.</p>
+                <a class="ch-cta" href="#rack" data-rack-tribe="stage">Browse The Stage</a>
               </div>
             </div>
           </article>
@@ -96,6 +99,7 @@
                 <p class="ch-freq">Gym</p>
                 <h3 id="gym-name" class="ch-name">The Iron</h3>
                 <p class="ch-line">For the ones who train when no one is watching.</p>
+                <a class="ch-cta" href="#rack" data-rack-tribe="iron">Browse The Iron</a>
               </div>
             </div>
           </article>
@@ -107,6 +111,7 @@
                 <p class="ch-freq">Cyber Tech</p>
                 <h3 id="ct-name" class="ch-name">The Grid</h3>
                 <p class="ch-line">For the ones who live inside the machine.</p>
+                <a class="ch-cta" href="#rack" data-rack-tribe="cyber">Browse The Grid</a>
               </div>
             </div>
           </article>
@@ -114,74 +119,75 @@
       <ol class="dial" aria-label="Tribes"><li data-channel="sr"><a href="#sr">The Stage</a></li><li data-channel="gym"><a href="#gym">The Iron</a></li><li data-channel="ct"><a href="#ct">The Grid</a></li></ol>
     </section>
 
-    <!-- 4. The pieces -->
-    <section id="transmission" class="archive" aria-labelledby="archive-title">
-      <div class="archive-head">
-        <p class="kicker">In the shop now</p>
-        <h2 id="archive-title">Transmission 01</h2>
-        <p class="archive-intro">Live now, at launch price. Printed on organic cotton, for her and for him.</p>
-      </div>
-
-      <div class="offer" id="offer">
-        <p class="offer-num">&minus;25%</p>
+    <!-- 4. The rack -->
+    <section id="rack" class="rackwrap" aria-label="The Rack">
+      <div class="offer" id="offer" hidden>
+        <p class="offer-num" id="offer-num">&minus;25%</p>
         <div class="offer-copy">
-          <p class="offer-kicker">Launch offer</p>
-          <p class="offer-text">On the whole shop. Ends 5 November.</p>
-          <p class="offer-clock tab" id="clock" aria-live="off"><span data-u="d">14</span><i>d</i> <span data-u="h">00</span><i>h</i> <span data-u="m">00</span><i>m</i> <span data-u="s">00</span><i>s</i></p>
+          <p class="offer-kicker" id="offer-kicker">Offer</p>
+          <p class="offer-text" id="offer-text"></p>
+          <p class="offer-clock tab" id="clock" aria-live="off"><span data-u="d">00</span><i>d</i> <span data-u="h">00</span><i>h</i> <span data-u="m">00</span><i>m</i> <span data-u="s">00</span><i>s</i></p>
         </div>
-        <a class="btn" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop the signal</a>
+        <a class="btn" id="offer-cta" href="https://voidsignal.myspreadshop.it/shop" data-shop-path="/shop" rel="noopener" target="_blank">Shop the signal</a>
       </div>
-
-      <ul class="tees">
-        <li class="tee" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+torn+signal+street+rock-A326cd44e800d9b89" rel="noopener" target="_blank"><figure><img src="/assets/lineup/sr-torn-model.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man wearing the Torn Signal tee: torn poster collage with a slashed VoidSignal logo"></figure><p class="tee-name">Torn Signal</p><p class="tee-meta">The Stage / 01</p><p class="tee-cta">Shop now</p></a></li>
-        <li class="tee" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+no+future+street+rock-A326cd41f8b60cfbd" rel="noopener" target="_blank"><figure><img src="/assets/lineup/sr-no-future-model.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man wearing the No Future tee: layered VoidSignal lettering with resist and noise stamps"></figure><p class="tee-name">No Future</p><p class="tee-meta">The Stage / 04</p><p class="tee-cta">Shop now</p></a></li>
-        <li class="tee" data-channel="gym"><a href="https://voidsignal.myspreadshop.it/void+signal+tribe+gym-A326cd47449e993d6" rel="noopener" target="_blank"><figure><img src="/assets/lineup/gym-tribe-model.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in the Tribe tee: angular VS emblem, at the barbell"></figure><p class="tee-name">Tribe</p><p class="tee-meta">The Iron / 01</p><p class="tee-cta">Shop now</p></a></li>
-        <li class="tee" data-channel="gym"><a href="https://voidsignal.myspreadshop.it/void+signal+dynamic+gym-A326cd4768980e196" rel="noopener" target="_blank"><figure><img src="/assets/lineup/gym-dynamic-model.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in the Dynamic tee: speed-streaked VS mark, mid-sprint"></figure><p class="tee-name">Dynamic</p><p class="tee-meta">The Iron / 02</p><p class="tee-cta">Shop now</p></a></li>
-      </ul>
-
-      <div class="drops">
-        <div class="drops-head">
-          <p class="kicker">Drop 02</p>
-          <h3>Landing next.</h3>
-          <p>Three tribes, new marks. Pick yours and be first in line when it goes live.</p>
-        </div>
-      <section class="rail" data-channel="sr" aria-label="The Stage">
-        <header class="rail-head"><h3>The Stage</h3><p>Street Rock</p></header>
-        <ul class="rail-track">
-<li class="card" data-channel="sr"><a href="#receive" data-pick="street-rock"><figure><img src="/assets/drop/sr-01.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a Last Encore tee: raven and guitar neck, on a stage flight case"></figure><p class="tee-name">Last Encore</p><p class="tee-meta">The Stage / 01</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="sr"><a href="#receive" data-pick="street-rock"><figure><img src="/assets/drop/sr-02.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a Feedback Ritual tee: speaker cone and distortion"></figure><p class="tee-name">Feedback Ritual</p><p class="tee-meta">The Stage / 02</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="sr"><a href="#receive" data-pick="street-rock"><figure><img src="/assets/drop/sr-03.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a boombox graphic tee outside a record shop"></figure><p class="tee-name">No. 03</p><p class="tee-meta">The Stage / 03</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="sr"><a href="#receive" data-pick="street-rock"><figure><img src="/assets/drop/sr-04.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a winged VoidSignal tee against a brick wall"></figure><p class="tee-name">No. 04</p><p class="tee-meta">The Stage / 04</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="sr"><a href="#receive" data-pick="street-rock"><figure><img src="/assets/drop/sr-05.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a butterfly collage tee in front of a record shop"></figure><p class="tee-name">No. 05</p><p class="tee-meta">The Stage / 05</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="sr"><a href="#receive" data-pick="street-rock"><figure><img src="/assets/drop/sr-06.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a distressed VoidSignal lettering tee at a record store"></figure><p class="tee-name">No. 06</p><p class="tee-meta">The Stage / 06</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-        </ul>
-      </section>
-      <section class="rail" data-channel="gym" aria-label="The Iron">
-        <header class="rail-head"><h3>The Iron</h3><p>Gym</p></header>
-        <ul class="rail-track">
-<li class="card" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-01.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in an Iron Pulse tee in a weight room"></figure><p class="tee-name">Iron Pulse</p><p class="tee-meta">The Iron / 01</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-02.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a Load Vector tee, VS monogram"></figure><p class="tee-name">Load Vector</p><p class="tee-meta">The Iron / 02</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-03.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a slashed-claw tee in a power rack"></figure><p class="tee-name">No. 03</p><p class="tee-meta">The Iron / 03</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-04.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a cracked concrete emblem tee"></figure><p class="tee-name">No. 04</p><p class="tee-meta">The Iron / 04</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-05.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a spiked VoidSignal star tee"></figure><p class="tee-name">No. 05</p><p class="tee-meta">The Iron / 05</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-06.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a metallic VS tee at the racks"></figure><p class="tee-name">No. 06</p><p class="tee-meta">The Iron / 06</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-        </ul>
-      </section>
-      <section class="rail" data-channel="ct" aria-label="The Grid">
-        <header class="rail-head"><h3>The Grid</h3><p>Cyber Tech</p></header>
-        <ul class="rail-track">
-<li class="card" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-01.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a Null Frequency tee on a neon street"></figure><p class="tee-name">Null Frequency</p><p class="tee-meta">The Grid / 01</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-02.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a Ghost Protocol tee, winged emblem"></figure><p class="tee-name">Ghost Protocol</p><p class="tee-meta">The Grid / 02</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-03.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in an orbit-and-diamond tee under neon"></figure><p class="tee-name">No. 03</p><p class="tee-meta">The Grid / 03</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-04.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Man in a chrome claw tee on a purple-lit walkway"></figure><p class="tee-name">No. 04</p><p class="tee-meta">The Grid / 04</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-05.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a VS ring tee in a neon arcade"></figure><p class="tee-name">No. 05</p><p class="tee-meta">The Grid / 05</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-<li class="card" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-06.webp" width="800" height="1000" loading="lazy" decoding="async" alt="Woman in a cyber VoidSignal lettering tee on a rooftop"></figure><p class="tee-name">No. 06</p><p class="tee-meta">The Grid / 06</p><p class="tee-cta tee-cta--soon">Next drop</p></a></li>
-        </ul>
-      </section>
-      </div>
+      <section class="vsr" id="vsr" aria-label="VOID SIGNAL — The Hanging Collection">
+ <div class="vsr-main" id="collection">
+  <div class="heading"><p class="eyebrow">The Hanging Collection</p><h2>Wear the <em>signal.</em></h2><p class="legend">Three tribes. One signal.</p>
+   <div class="vsr-cats" role="group" aria-label="Category"><button type="button" data-k="tee" aria-pressed="true">T-shirt</button><button type="button" data-k="ls" aria-pressed="false">Long sleeve</button><button type="button" data-k="hd" aria-pressed="false">Hoodie</button></div></div>
+  <div id="scene" tabindex="0" role="group" aria-label="3D rack. Drag or use the arrow keys to browse the collection."><div id="loading"><span></span><p>Setting the frequency</p></div></div>
+  <div class="bottom">
+   <p class="hint">Drag the rack · tap a piece to turn it · tap again to look closer</p>
+   <div class="nav"><button id="prev" type="button" aria-label="Previous piece">&larr;</button><span id="count" aria-live="polite">01 / 21</span><button id="next" type="button" aria-label="Next piece">&rarr;</button></div>
+   <div class="product"><p id="category">Street Rock</p><h3 id="name">No Future</h3><button id="detail" type="button">View piece</button></div>
+  </div>
+  <div class="track"><i id="track-indicator"></i></div>
+  <div class="outro"><p>No static. Just signal.</p><a href="https://voidsignal.myspreadshop.it/shop" data-shop-path="/shop" target="_blank" rel="noopener">Shop the collection &rarr;</a></div>
+ </div>
+ <button class="vsr-sound" type="button" aria-pressed="true" aria-label="Turn rail sound off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path class="w" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/><path class="x" d="M16 9.5l4 5M20 9.5l-4 5"/></svg></button>
+ <p class="vsr-sr" aria-live="polite"></p>
+ <div class="vsr-sheet" role="dialog" aria-modal="true" aria-label="Product"></div>
+ <noscript><p class="error-notice">The rack needs JavaScript. <a href="https://voidsignal.myspreadshop.it/shop" data-shop-path="/shop">Open the shop</a>.</p></noscript>
+</section>
+      <details class="rack-list" id="rack-list"><summary>All 21 designs</summary><div class="rl-grid"><div class="rl-group" data-channel="sr"><h4>The Stage</h4><ul><li><a href="https://voidsignal.myspreadshop.it/void+signal+cymbal+cataclysm+street+rock-A327e3e45c60857f9" data-design="Cymbal Cataclysm" rel="noopener" target="_blank">Cymbal Cataclysm</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+signal+serpent+street+rock-A327e3e45ca9823af" data-design="Signal Serpent" rel="noopener" target="_blank">Signal Serpent</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+speaker+riot+street+rock-A327e3e480728421e" data-design="Speaker Riot" rel="noopener" target="_blank">Speaker Riot</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+shattered+vinyl+moth+street+rock-A327e3e4802d752bf" data-design="Shattered Vinyl Moth" rel="noopener" target="_blank">Shattered Vinyl Moth</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+raven+of+the+pit+street+rock-A327e3e4463e31db4" data-design="Raven of the Pit" rel="noopener" target="_blank">Raven of the Pit</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+pirate+radio+uprising+street+rock-A327e3e47c90f3b64" data-design="Pirate Radio Uprising" rel="noopener" target="_blank">Pirate Radio Uprising</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+feedback+ritual+street+rock-A327bdab500a5d4bd" data-design="Feedback Ritual" rel="noopener" target="_blank">Feedback Ritual</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+last+encore+street+rock-A327bdab4c150c31a" data-design="Last Encore" rel="noopener" target="_blank">Last Encore</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+no+future+street+rock-A326cd41f8b60cfbd" data-design="No Future" rel="noopener" target="_blank">No Future</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+dead+air+street+rock-A326cd43903bc31a3" data-design="Dead Air" rel="noopener" target="_blank">Dead Air</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+signal+white+street+rock-A326cd439e9ff5a25" data-design="Signal White" rel="noopener" target="_blank">Signal White</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+overdrive+street+rock-A326cd4476b7ddad4" data-design="Overdrive" rel="noopener" target="_blank">Overdrive</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+torn+signal+street+rock-A326cd44e800d9b89" data-design="Torn Signal" rel="noopener" target="_blank">Torn Signal</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+signal+street+rock-A326cd41a87e6fd45" data-design="Signal" rel="noopener" target="_blank">Signal</a></li></ul></div><div class="rl-group" data-channel="gym"><h4>The Iron</h4><ul><li><a href="https://voidsignal.myspreadshop.it/void+signal+load+vector+gym-A327dcda54101be1c" data-design="Load Vector" rel="noopener" target="_blank">Load Vector</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+iron+pulse+gym-A327bdab3a2aed81c" data-design="Iron Pulse" rel="noopener" target="_blank">Iron Pulse</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+tribe+gym-A326cd47449e993d6" data-design="Tribe" rel="noopener" target="_blank">Tribe</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+dynamic+gym-A326cd4768980e196" data-design="Dynamic" rel="noopener" target="_blank">Dynamic</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+core+gym-A326cd4796c25de96" data-design="Core" rel="noopener" target="_blank">Core</a></li></ul></div><div class="rl-group" data-channel="ct"><h4>The Grid</h4><ul><li><a href="https://voidsignal.myspreadshop.it/void+signal+null+frequency+cyber-A327bdab309515895" data-design="Null Frequency" rel="noopener" target="_blank">Null Frequency</a></li><li><a href="https://voidsignal.myspreadshop.it/void+signal+ghost+protocol+cyber-A327bdab4c23d7c8a" data-design="Ghost Protocol" rel="noopener" target="_blank">Ghost Protocol</a></li></ul></div></div></details>
     </section>
 
-    <!-- 5. Receive -->
+    <!-- 5. Lookbook -->
+    <section id="lookbook" class="lookbook" aria-labelledby="lb-title">
+      <div class="lb-head">
+        <div><p class="kicker">Lookbook</p><h2 id="lb-title">Worn by the tribes.</h2></div>
+        <div class="lb-chips" role="group" aria-label="Jump to a tribe"><button type="button" data-jump="sr">The Stage</button><button type="button" data-jump="gym">The Iron</button><button type="button" data-jump="ct">The Grid</button></div>
+      </div>
+      <div class="lb-stage" id="lb-stage" data-tribe="sr">
+        <ul class="lb-track" id="lb-track" tabindex="0" aria-label="Lookbook, scroll sideways">
+<li id="lb-sr" class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+last+encore+street+rock-A327bdab4c150c31a" data-design="Last Encore" rel="noopener" target="_blank"><figure><img src="/assets/drop/sr-01.webp" width="800" height="1000" decoding="async" alt="Woman in a Last Encore tee: raven and guitar neck, on a stage flight case"></figure><p class="tee-name">Last Encore</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+feedback+ritual+street+rock-A327bdab500a5d4bd" data-design="Feedback Ritual" rel="noopener" target="_blank"><figure><img src="/assets/drop/sr-02.webp" width="800" height="1000" decoding="async" alt="Woman in a Feedback Ritual tee: speaker cone and distortion"></figure><p class="tee-name">Feedback Ritual</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+pirate+radio+uprising+street+rock-A327e3e47c90f3b64" data-design="Pirate Radio Uprising" rel="noopener" target="_blank"><figure><img src="/assets/drop/sr-03.webp" width="800" height="1000" decoding="async" alt="Man in a boombox graphic tee outside a record shop"></figure><p class="tee-name">Pirate Radio Uprising</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+raven+of+the+pit+street+rock-A327e3e4463e31db4" data-design="Raven of the Pit" rel="noopener" target="_blank"><figure><img src="/assets/drop/sr-04.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in a winged VoidSignal tee against a brick wall"></figure><p class="tee-name">Raven of the Pit</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+shattered+vinyl+moth+street+rock-A327e3e4802d752bf" data-design="Shattered Vinyl Moth" rel="noopener" target="_blank"><figure><img src="/assets/drop/sr-05.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a butterfly collage tee in front of a record shop"></figure><p class="tee-name">Shattered Vinyl Moth</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+speaker+riot+street+rock-A327e3e480728421e" data-design="Speaker Riot" rel="noopener" target="_blank"><figure><img src="/assets/drop/sr-06.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in a distressed VoidSignal lettering tee at a record store"></figure><p class="tee-name">Speaker Riot</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+torn+signal+street+rock-A326cd44e800d9b89" data-design="Torn Signal" rel="noopener" target="_blank"><figure><img src="/assets/lineup/sr-torn-model.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man wearing the Torn Signal tee: torn poster collage with a slashed VoidSignal logo"></figure><p class="tee-name">Torn Signal</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+no+future+street+rock-A326cd41f8b60cfbd" data-design="No Future" rel="noopener" target="_blank"><figure><img src="/assets/lineup/sr-no-future-model.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man wearing the No Future tee: layered VoidSignal lettering with resist and noise stamps"></figure><p class="tee-name">No Future</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="sr"><a href="https://voidsignal.myspreadshop.it/void+signal+signal+street+rock-A326cd41a87e6fd45" data-design="Signal" rel="noopener" target="_blank"><figure><img src="/assets/lineup/sr-signal-model.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in the Signal shield tee at the bar"></figure><p class="tee-name">Signal</p><p class="tee-meta">The Stage</p><p class="tee-cta">Shop it</p></a></li>
+<li id="lb-gym" class="lb-card" data-channel="gym"><a href="https://voidsignal.myspreadshop.it/void+signal+iron+pulse+gym-A327bdab3a2aed81c" data-design="Iron Pulse" rel="noopener" target="_blank"><figure><img src="/assets/drop/gym-01.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in an Iron Pulse tee in a weight room"></figure><p class="tee-name">Iron Pulse</p><p class="tee-meta">The Iron</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="gym"><a href="https://voidsignal.myspreadshop.it/void+signal+load+vector+gym-A327dcda54101be1c" data-design="Load Vector" rel="noopener" target="_blank"><figure><img src="/assets/drop/gym-02.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in a Load Vector tee, VS monogram"></figure><p class="tee-name">Load Vector</p><p class="tee-meta">The Iron</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="gym"><a href="https://voidsignal.myspreadshop.it/void+signal+tribe+gym-A326cd47449e993d6" data-design="Tribe" rel="noopener" target="_blank"><figure><img src="/assets/lineup/gym-tribe-model.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in the Tribe tee: angular VS emblem, at the barbell"></figure><p class="tee-name">Tribe</p><p class="tee-meta">The Iron</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="gym"><a href="https://voidsignal.myspreadshop.it/void+signal+dynamic+gym-A326cd4768980e196" data-design="Dynamic" rel="noopener" target="_blank"><figure><img src="/assets/lineup/gym-dynamic-model.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in the Dynamic tee: speed-streaked VS mark, mid-sprint"></figure><p class="tee-name">Dynamic</p><p class="tee-meta">The Iron</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-03.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a slashed-claw tee in a power rack"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Iron</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-04.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a cracked concrete emblem tee"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Iron</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-05.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a spiked VoidSignal star tee"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Iron</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="gym"><a href="#receive" data-pick="gym"><figure><img src="/assets/drop/gym-06.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in a metallic VS tee at the racks"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Iron</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li id="lb-ct" class="lb-card" data-channel="ct"><a href="https://voidsignal.myspreadshop.it/void+signal+null+frequency+cyber-A327bdab309515895" data-design="Null Frequency" rel="noopener" target="_blank"><figure><img src="/assets/drop/ct-01.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a Null Frequency tee on a neon street"></figure><p class="tee-name">Null Frequency</p><p class="tee-meta">The Grid</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card" data-channel="ct"><a href="https://voidsignal.myspreadshop.it/void+signal+ghost+protocol+cyber-A327bdab4c23d7c8a" data-design="Ghost Protocol" rel="noopener" target="_blank"><figure><img src="/assets/drop/ct-02.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a Ghost Protocol tee, winged emblem"></figure><p class="tee-name">Ghost Protocol</p><p class="tee-meta">The Grid</p><p class="tee-cta">Shop it</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-03.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in an orbit-and-diamond tee under neon"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Grid</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-04.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Man in a chrome claw tee on a purple-lit walkway"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Grid</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-05.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in a VS ring tee in a neon arcade"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Grid</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+<li class="lb-card lb-card--soon" data-channel="ct"><a href="#receive" data-pick="cyber-tech"><figure><img src="/assets/drop/ct-06.webp" width="800" height="1000" loading="lazy" loading="lazy" decoding="async" alt="Woman in a cyber VoidSignal lettering tee on a rooftop"></figure><p class="tee-name">Drop 02</p><p class="tee-meta">The Grid</p><p class="tee-cta tee-cta--soon">Get notified</p></a></li>
+        </ul>
+      </div>
+      <div class="lb-progress" aria-hidden="true"><i id="lb-bar"></i></div>
+    </section>
+
+    <!-- 6. Receive -->
     <section id="receive" class="receive" aria-labelledby="receive-title">
       <div class="receive-intro">
         <p class="kicker">On the frequency</p>
@@ -235,14 +241,15 @@
     <ul>
       <li><a href="mailto:info@voidsignalbrand.com">info@voidsignalbrand.com</a></li>
       <li><a href="https://www.instagram.com/voidsignalbrand/" rel="noopener" target="_blank">Instagram</a></li>
-      <li><a href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop</a></li>
+      <li><a href="https://voidsignal.myspreadshop.it/shop" data-shop-path="/shop" rel="noopener" target="_blank">Shop</a></li>
       <li><a href="/privacy/">Privacy</a></li>
     </ul>
-    <a class="btn foot-cta" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop the signal</a>
+    <a class="btn foot-cta" data-shop-path="/shop" href="https://voidsignal.myspreadshop.it/shop" rel="noopener" target="_blank">Shop the signal</a>
     <p class="foot-note">© 2026 VoidSignal. Designed in Italy at <a href="https://sites.smartlabdesign.it/" rel="noopener" target="_blank">SmartLabDesign</a>.</p>
     </div>
   </footer>
 
-  <script src="/assets/main.js?v=20261022b" defer></script>
+  <script src="/assets/shop.js?v=20261106a" defer></script>
+  <script src="/assets/main.js?v=20261106a" defer></script>
 </body>
 </html>
