@@ -551,3 +551,18 @@ h1, h2, h3 { font-weight: 400; margin: 0; text-wrap: balance; }
 .lb-progress { height: 2px; margin: .6rem var(--gutter) 0; background: var(--line); border-radius: 2px; overflow: hidden; }
 .lb-progress i { display: block; height: 100%; background: var(--lc, var(--bone)); transform-origin: 0 50%; transform: scaleX(0); transition: background .6s; }
 @media (prefers-reduced-motion: reduce) { .lb-glow, .lb-card figure, .lb-card img { transition: none; } }
+
+/* ===== Polish: header, manifesto emphasis, full-bleed rack ===== */
+.wordmark img { width: clamp(64px, 5.2vw, 78px); }
+.top nav { align-items: center; }
+.top nav a:not(.nav-shop) { display: inline-flex; align-items: center; padding-top: .16em; }
+.region button { padding-top: calc(.5rem + .1em); }
+.myth .lit .em { font-style: italic; color: var(--signal); }
+
+.rackwrap { overflow-x: clip; }
+.rackwrap .vsr { max-width: none; background: transparent; overflow: visible; }
+.rackwrap .vsr .vsr-main > .heading { max-width: 1600px; margin-inline: auto; }
+.rackwrap .vsr .bottom, .rackwrap .vsr .track { width: min(90%, 1440px); margin-inline: auto; }
+.rackwrap .vsr #scene { width: 100%; }
+.rackwrap .vsr-sound { right: max(16px, calc((100% - 1600px) / 2 + 16px)); }
+.rackwrap:not(.no-webgl) .rack-list { display: none; }
